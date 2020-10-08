@@ -1,0 +1,57 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthepp" rel="Chapter" href="Marthepp.html"><title>Marthepp.print_term</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> print_term fmt m =
+  <span class="keyword">match</span> m <span class="keyword">with</span>
+  <span class="keywordsign">|</span> <span class="constructor">Id</span> x <span class="keywordsign">-&gt;</span>
+     print_id fmt x
+  <span class="keywordsign">|</span> <span class="constructor">LInt</span> n <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"%d"</span> n
+  <span class="keywordsign">|</span> <span class="constructor">LBool</span> b <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"%b"</span> b
+  <span class="keywordsign">|</span> <span class="constructor">Bop</span> (op, m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"(@[%a %a@ %a@])"</span>
+       print_binary_op op
+       print_term m
+       print_term n
+  <span class="keywordsign">|</span> <span class="constructor">Uop</span> (op, m) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"(@[%a@ %a@])"</span>
+       print_unary_op op
+       print_term m
+  <span class="keywordsign">|</span> <span class="constructor">Let</span> (x, m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"@[let@ %a =@ %a in@ %a@]"</span>
+       print_id x
+       print_term m
+       print_term n
+  <span class="keywordsign">|</span> <span class="constructor">Pair</span> (m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"@[(%a,@ %a)@]"</span>
+       print_term m
+       print_term n
+  <span class="keywordsign">|</span> <span class="constructor">Fst</span> m <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"@[(fst@ %a)@]"</span>
+       print_term m
+  <span class="keywordsign">|</span> <span class="constructor">Snd</span> m <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"@[(snd@ %a)@]"</span>
+       print_term m
+  <span class="keywordsign">|</span> <span class="constructor">If</span> (m, n, p) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"@[(if %a@ then %a else@ %a)@]"</span>
+       print_term m
+       print_term n
+       print_term p
+  <span class="keywordsign">|</span> <span class="constructor">Fun</span> (x, m) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"(fun %a.@ %a)"</span>
+       print_id x
+       print_term m
+  <span class="keywordsign">|</span> <span class="constructor">App</span> (m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">Format</span>.fprintf fmt <span class="string">"(%a@ %a)"</span>
+       print_term m
+       print_term n</code></body></html>

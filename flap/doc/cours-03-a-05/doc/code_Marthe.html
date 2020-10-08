@@ -1,0 +1,224 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthe" rel="Chapter" href="Marthe.html"><title>Marthe</title>
+</head>
+<body>
+<code class="code"></code><table><tr><td></td><td><span class="comment">(** <h2 id="1_Cours03Marthe">Cours 03 : Marthe</h2> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_SyntaxedulangagejouetMarthe">Syntaxe du langage jouet Marthe</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;identifier&nbsp;=&nbsp;string<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des termes (expressions) du langage Marthe. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;term&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** variables *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** constantes litérales entières *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** addition *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** produit *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;*&nbsp;term&nbsp;*&nbsp;term&nbsp;*&nbsp;term&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** somme formelle *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Les différentes fonctions d'affichage utilisent le module
+   <a href="Stdlib.Format.html"><code class="code">Stdlib.Format</code></a>. On peut ordonner au toplevel d'utiliser la fonction
+   d'affichage <code class="code">f</code> via la directive <code class="code">#install_printer f</code>. *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id fmt x</code> affiche l'identifiant <code class="code">x</code> en utilisant le formateur <code class="code">fmt</code>,
+   cf. le module <a href="Stdlib.Format.html"><code class="code">Stdlib.Format</code></a>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id&nbsp;fmt&nbsp;x&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s"</span>&nbsp;x;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_term fmt m</code> affiche le terme <code class="code">m</code> en utilisant le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_term&nbsp;fmt&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;fmt&nbsp;x<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%d"</span>&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(@[%a&nbsp;+@&nbsp;%a@])"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(@[%a&nbsp;*@&nbsp;%a@])"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(x,&nbsp;m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"sum&nbsp;(@[%a,@&nbsp;%a,@&nbsp;%a,@&nbsp;%a@])"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;p<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Fonctionsutilitairessurlesidentifiants">Fonctions utilitaires sur les identifiants</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Enrobe les identifiants pour les rendre compatibles avec <a href="Map.S.html"><code class="code">Map.S</code></a>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">Id</span>&nbsp;=&nbsp;<span class="keyword">struct</span>&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;identifier&nbsp;<span class="keyword">let</span>&nbsp;compare&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.compare&nbsp;<span class="keyword">end</span>;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Module fournissant une implementation des ensembles finis d'identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">S</span>&nbsp;=&nbsp;<span class="constructor">Set</span>.<span class="constructor">Make</span>(<span class="constructor">Id</span>);;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Module fournissant une implementation des dictionnaires d'identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">M</span>&nbsp;=&nbsp;<span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">Id</span>);;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id_set fmt s</code> affiche l'ensemble fini d'identifiants <code class="code">s</code> en utilisant
+   le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id_set&nbsp;fmt&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;r&nbsp;=&nbsp;ref&nbsp;(<span class="constructor">S</span>.cardinal&nbsp;s)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_id&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;decr&nbsp;r;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s%s@&nbsp;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;!r&nbsp;&gt;&nbsp;0&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">","</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"{@[&nbsp;"</span>;<br>
+&nbsp;&nbsp;<span class="constructor">S</span>.iter&nbsp;print_id&nbsp;s;<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@]}"</span><br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id_set fmt s</code> affiche l'ensemble fini d'identifiants <code class="code">s</code> en utilisant
+   le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id_map&nbsp;print_val&nbsp;fmt&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;r&nbsp;=&nbsp;ref&nbsp;(<span class="constructor">M</span>.cardinal&nbsp;m)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_key_value_pair&nbsp;x&nbsp;v&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;decr&nbsp;r;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s:&nbsp;%a%s@&nbsp;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_val&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;!r&nbsp;&gt;&nbsp;0&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">","</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"{@[&nbsp;"</span>;<br>
+&nbsp;&nbsp;<span class="constructor">M</span>.iter&nbsp;print_key_value_pair&nbsp;m;<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@]}"</span><br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Gestiondesvariableslibresrenommagealphaquivalenceetsubstitution">Gestion des variables libres, renommage, alpha-équivalence et
+   substitution</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">fv m</code> retourne l'ensemble des variables libres du terme <code class="code">m</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;fv&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.empty<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.singleton&nbsp;x<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.union&nbsp;(fv&nbsp;m)&nbsp;(fv&nbsp;n)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(x,&nbsp;m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.union<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">S</span>.union&nbsp;(fv&nbsp;m)&nbsp;(fv&nbsp;n))<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="constructor">S</span>.diff&nbsp;(fv&nbsp;p)&nbsp;(<span class="constructor">S</span>.singleton&nbsp;x))<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Mathématiquement, un renommage est une fonction partielle finie des
+   identifiants dans les identifiants. En OCaml, on représente une telle
+   fonction partielle finie par un dictionnaire. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;renaming&nbsp;=&nbsp;identifier&nbsp;<span class="constructor">M</span>.t;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_renaming fmt r</code> affiche le renommage <code class="code">r</code> en utilisant le formateur
+   <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_renaming&nbsp;=&nbsp;print_id_map&nbsp;print_id;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">fresh s</code> retourne un identifiant n'appartenant pas à l'ensemble <code class="code">s</code>. **)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;fresh&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;Il&nbsp;y&nbsp;a&nbsp;une&nbsp;solution&nbsp;beaucoup&nbsp;plus&nbsp;efficace&nbsp;utilisant&nbsp;[S.min_elt].&nbsp;On&nbsp;peut<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encore&nbsp;utiliser&nbsp;un&nbsp;compteur&nbsp;global.&nbsp;*)</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;loop&nbsp;prefix&nbsp;i&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;x&nbsp;=&nbsp;prefix&nbsp;^&nbsp;string_of_int&nbsp;i&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">S</span>.mem&nbsp;x&nbsp;s&nbsp;<span class="keyword">then</span>&nbsp;loop&nbsp;prefix&nbsp;(i&nbsp;+&nbsp;1)&nbsp;<span class="keyword">else</span>&nbsp;x<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;loop&nbsp;<span class="string">"x"</span>&nbsp;0<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">rename m y x</code> remplace toutes les occurences libres de <code class="code">x</code> dans <code class="code">m</code> par
+   <code class="code">y</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;rename&nbsp;m&nbsp;y&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;z&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Id</span>&nbsp;(<span class="keyword">if</span>&nbsp;z&nbsp;=&nbsp;x&nbsp;<span class="keyword">then</span>&nbsp;y&nbsp;<span class="keyword">else</span>&nbsp;z)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Add</span>&nbsp;(rename&nbsp;m&nbsp;y&nbsp;x,&nbsp;rename&nbsp;n&nbsp;y&nbsp;x)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mul</span>&nbsp;(rename&nbsp;m&nbsp;y&nbsp;x,&nbsp;rename&nbsp;n&nbsp;y&nbsp;x)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(z,&nbsp;m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;z&nbsp;=&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(z,&nbsp;rename&nbsp;m&nbsp;y&nbsp;x,&nbsp;rename&nbsp;n&nbsp;y&nbsp;x,&nbsp;p)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;k&nbsp;=&nbsp;fresh&nbsp;(<span class="constructor">S</span>.add&nbsp;y&nbsp;(fv&nbsp;p))&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Sum</span>&nbsp;(k,&nbsp;rename&nbsp;m&nbsp;y&nbsp;x,&nbsp;rename&nbsp;n&nbsp;y&nbsp;x,&nbsp;rename&nbsp;(rename&nbsp;p&nbsp;k&nbsp;z)&nbsp;y&nbsp;x)<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">alpha_eq m n</code> vaut <code class="code">true</code> ssi <code class="code">m</code> et <code class="code">n</code> sont égaux à un renommage de leurs
+   variables liées près. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;alpha_eq&nbsp;m&nbsp;n&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m,&nbsp;n&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x,&nbsp;<span class="constructor">Id</span>&nbsp;y&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x&nbsp;=&nbsp;y<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;i,&nbsp;<span class="constructor">LInt</span>&nbsp;j&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i&nbsp;=&nbsp;j<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(m,&nbsp;n),&nbsp;<span class="constructor">Add</span>&nbsp;(m',&nbsp;n')&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(m,&nbsp;n),&nbsp;<span class="constructor">Mul</span>&nbsp;(m',&nbsp;n')&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha_eq&nbsp;m&nbsp;m'&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;alpha_eq&nbsp;n&nbsp;n'<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(x,&nbsp;m,&nbsp;n,&nbsp;p),&nbsp;<span class="constructor">Sum</span>&nbsp;(y,&nbsp;m',&nbsp;n',&nbsp;p')&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha_eq&nbsp;m&nbsp;m'&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;alpha_eq&nbsp;n&nbsp;n'<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">&amp;&amp;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;z&nbsp;=&nbsp;fresh&nbsp;(<span class="constructor">S</span>.union&nbsp;(fv&nbsp;p)&nbsp;(fv&nbsp;p'))&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alpha_eq&nbsp;(rename&nbsp;p&nbsp;z&nbsp;x)&nbsp;(rename&nbsp;p'&nbsp;z&nbsp;y)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">false</span><br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">subst n m x</code> remplace toutes les occurences libres de <code class="code">x</code> dans <code class="code">n</code> par
+    <code class="code">m</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;subst&nbsp;n&nbsp;m&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;n&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;y&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;y&nbsp;=&nbsp;x&nbsp;<span class="keyword">then</span>&nbsp;m&nbsp;<span class="keyword">else</span>&nbsp;<span class="constructor">Id</span>&nbsp;y<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">LInt</span>&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Add</span>&nbsp;(subst&nbsp;n&nbsp;m&nbsp;x,&nbsp;subst&nbsp;p&nbsp;m&nbsp;x)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Mul</span>&nbsp;(subst&nbsp;n&nbsp;m&nbsp;x,&nbsp;subst&nbsp;p&nbsp;m&nbsp;x)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(y,&nbsp;n,&nbsp;p,&nbsp;o)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;y&nbsp;=&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">then</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(y,&nbsp;subst&nbsp;n&nbsp;m&nbsp;x,&nbsp;subst&nbsp;p&nbsp;m&nbsp;x,&nbsp;o)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">else</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;k&nbsp;=&nbsp;fresh&nbsp;(<span class="constructor">S</span>.union&nbsp;(fv&nbsp;o)&nbsp;(fv&nbsp;m))&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Sum</span>&nbsp;(k,&nbsp;subst&nbsp;n&nbsp;m&nbsp;x,&nbsp;subst&nbsp;p&nbsp;m&nbsp;x,&nbsp;subst&nbsp;(rename&nbsp;o&nbsp;k&nbsp;y)&nbsp;m&nbsp;x)<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_valuation">Évaluation</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** On représente les environnements par des dictionnaires associant des entiers
+   aux valeurs. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;env&nbsp;=&nbsp;int&nbsp;<span class="constructor">M</span>.t<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">eval m env</code> renvoie l'entier <code class="code">n</code> résultant de l'évaluation de <code class="code">m</code> dans
+   l'environnement <code class="code">m</code>. Si <code class="code">fv m</code> n'est pas inclut dans l'ensemble des clés de
+   <code class="code">env</code>, la fonction lève l'exception <a href="Not_found.html#EXCEPTIONNot_found"><code class="code">Not_found</code></a>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;eval&nbsp;m&nbsp;env&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">M</span>.find&nbsp;x&nbsp;env<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;i&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;i<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eval&nbsp;m&nbsp;env&nbsp;+&nbsp;eval&nbsp;n&nbsp;env<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eval&nbsp;m&nbsp;env&nbsp;*&nbsp;eval&nbsp;n&nbsp;env<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sum</span>&nbsp;(x,&nbsp;m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;lo&nbsp;=&nbsp;eval&nbsp;m&nbsp;env&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;hi&nbsp;=&nbsp;eval&nbsp;n&nbsp;env&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;eval_on_range&nbsp;lo&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;lo&nbsp;&lt;=&nbsp;hi&nbsp;<span class="keyword">then</span>&nbsp;eval&nbsp;p&nbsp;(<span class="constructor">M</span>.add&nbsp;x&nbsp;lo&nbsp;env)&nbsp;+&nbsp;eval_on_range&nbsp;(lo&nbsp;+&nbsp;1)&nbsp;<span class="keyword">else</span>&nbsp;0<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eval_on_range&nbsp;lo<br>
+</code></body></html>

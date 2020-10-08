@@ -1,0 +1,6 @@
+make: Entering directory '/home/opam/source/flap'
+---------------------
+Checking dependencies
+---------------------
+Looking for pprint...check-dependencies.sh: 6: check-dependencies.sh: ocamlfind: not found
+make: Leaving directory '/home/opam/source/flap'

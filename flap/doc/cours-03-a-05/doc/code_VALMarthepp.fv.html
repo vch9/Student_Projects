@@ -1,0 +1,28 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthepp" rel="Chapter" href="Marthepp.html"><title>Marthepp.fv</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> fv m =
+  <span class="keyword">match</span> m <span class="keyword">with</span>
+  <span class="keywordsign">|</span> <span class="constructor">Id</span> x <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.singleton x
+  <span class="keywordsign">|</span> <span class="constructor">LInt</span> _ <span class="keywordsign">|</span> <span class="constructor">LBool</span> _ <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.empty
+  <span class="keywordsign">|</span> <span class="constructor">Bop</span> (_, m, n) <span class="keywordsign">|</span> <span class="constructor">Pair</span> (m, n) <span class="keywordsign">|</span> <span class="constructor">App</span> (m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.union (fv m) (fv n)
+  <span class="keywordsign">|</span> <span class="constructor">Uop</span> (_, m) <span class="keywordsign">|</span> <span class="constructor">Fst</span> m <span class="keywordsign">|</span> <span class="constructor">Snd</span> m <span class="keywordsign">-&gt;</span>
+     fv m
+  <span class="keywordsign">|</span> <span class="constructor">Let</span> (x, m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.(union (fv m) (diff (fv n) (singleton x)))
+  <span class="keywordsign">|</span> <span class="constructor">If</span> (m, n, p) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.(union (union (fv m) (fv n)) (fv p))
+  <span class="keywordsign">|</span> <span class="constructor">Fun</span> (x, m) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.(diff (fv m) (singleton x))</code></body></html>

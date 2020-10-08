@@ -1,0 +1,325 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of exceptions" rel=Appendix href="index_exceptions.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthepp" rel="Chapter" href="Marthepp.html"><title>Marthepp</title>
+</head>
+<body>
+<code class="code"></code><table><tr><td></td><td><span class="comment">(** <h2 id="1_Cours04Marthe">Cours 04 : Marthe++</h2> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_SyntaxedulangagejouetMarthe">Syntaxe du langage jouet Marthe++</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;identifier&nbsp;=&nbsp;string<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des opérateurs binaires. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;bop&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sub</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Div</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">And</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Or</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Le</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des opérateurs unaires. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;uop&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Not</span><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Type des termes (expressions) du langage Marthe. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;term&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** variables *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** constantes litérales entières *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LBool</span>&nbsp;<span class="keyword">of</span>&nbsp;bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** constantes littérales booléennes *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bop</span>&nbsp;<span class="keyword">of</span>&nbsp;bop&nbsp;*&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** opération binaire *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Uop</span>&nbsp;<span class="keyword">of</span>&nbsp;uop&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** opération unaire *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Let</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;*&nbsp;term&nbsp;*&nbsp;term&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** définition locale *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pair</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** paires *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fst</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** première projection *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Snd</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** seconde projection *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">If</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;*&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** conditionnelle *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fun</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** fonction anonyme *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">App</span>&nbsp;<span class="keyword">of</span>&nbsp;term&nbsp;*&nbsp;term&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** application *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Les différentes fonctions d'affichage utilisent le module
+   <a href="Stdlib.Format.html"><code class="code">Stdlib.Format</code></a>. On peut ordonner au toplevel d'utiliser la fonction
+   d'affichage <code class="code">f</code> via la directive <code class="code">#install_printer f</code>. *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id fmt x</code> affiche l'identifiant <code class="code">x</code> en utilisant le formateur <code class="code">fmt</code>,
+   cf. le module <a href="Stdlib.Format.html"><code class="code">Stdlib.Format</code></a>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id&nbsp;fmt&nbsp;x&nbsp;=&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s"</span>&nbsp;x;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_binary_op fmt op</code> affiche l'opérateur binaire <code class="code">op</code> en utilisant le
+   formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_binary_op&nbsp;fmt&nbsp;op&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;op&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"+"</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sub</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"-"</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"*"</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Div</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"/"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">And</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"/\\"</span>&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Or</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"\\/"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Le</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"&lt;="</span><br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s"</span>&nbsp;s<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_unary_op fmt op</code> affiche l'opérateur unaire <code class="code">op</code> en utilisant le
+   formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_unary_op&nbsp;fmt&nbsp;op&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;op&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Not</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="string">"not"</span><br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s"</span>&nbsp;s<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_term fmt m</code> affiche le terme <code class="code">m</code> en utilisant le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_term&nbsp;fmt&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;fmt&nbsp;x<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%d"</span>&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LBool</span>&nbsp;b&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%b"</span>&nbsp;b<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bop</span>&nbsp;(op,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(@[%a&nbsp;%a@&nbsp;%a@])"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_binary_op&nbsp;op<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Uop</span>&nbsp;(op,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(@[%a@&nbsp;%a@])"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_unary_op&nbsp;op<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Let</span>&nbsp;(x,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[let@&nbsp;%a&nbsp;=@&nbsp;%a&nbsp;in@&nbsp;%a@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pair</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[(%a,@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fst</span>&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[(fst@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Snd</span>&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[(snd@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">If</span>&nbsp;(m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[(if&nbsp;%a@&nbsp;then&nbsp;%a&nbsp;else@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;p<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fun</span>&nbsp;(x,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(fun&nbsp;%a.@&nbsp;%a)"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">App</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"(%a@&nbsp;%a)"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;n<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Fonctionsutilitairessurlesidentifiants">Fonctions utilitaires sur les identifiants</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Enrobe les identifiants pour les rendre compatibles avec <a href="Map.S.html"><code class="code">Map.S</code></a>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">Id</span>&nbsp;=&nbsp;<span class="keyword">struct</span>&nbsp;<span class="keyword">type</span>&nbsp;t&nbsp;=&nbsp;identifier&nbsp;<span class="keyword">let</span>&nbsp;compare&nbsp;=&nbsp;<span class="constructor">Stdlib</span>.compare&nbsp;<span class="keyword">end</span>;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Module fournissant une implementation des ensembles finis d'identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">S</span>&nbsp;=&nbsp;<span class="constructor">Set</span>.<span class="constructor">Make</span>(<span class="constructor">Id</span>);;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Module fournissant une implementation des dictionnaires d'identifiants. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">module</span>&nbsp;<span class="constructor">M</span>&nbsp;=&nbsp;<span class="constructor">Map</span>.<span class="constructor">Make</span>(<span class="constructor">Id</span>);;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id_set fmt s</code> affiche l'ensemble fini d'identifiants <code class="code">s</code> en utilisant
+   le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id_set&nbsp;fmt&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;r&nbsp;=&nbsp;ref&nbsp;(<span class="constructor">S</span>.cardinal&nbsp;s)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_id&nbsp;x&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;decr&nbsp;r;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s%s@&nbsp;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;!r&nbsp;&gt;&nbsp;0&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">","</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"{@[&nbsp;"</span>;<br>
+&nbsp;&nbsp;<span class="constructor">S</span>.iter&nbsp;print_id&nbsp;s;<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@]}"</span><br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_id_set fmt s</code> affiche l'ensemble fini d'identifiants <code class="code">s</code> en utilisant
+   le formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_id_map&nbsp;print_val&nbsp;fmt&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;r&nbsp;=&nbsp;ref&nbsp;(<span class="constructor">M</span>.cardinal&nbsp;m)&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;print_key_value_pair&nbsp;x&nbsp;v&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;decr&nbsp;r;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%s:&nbsp;%a%s@&nbsp;"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_val&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<span class="keyword">if</span>&nbsp;!r&nbsp;&gt;&nbsp;0&nbsp;<span class="keyword">then</span>&nbsp;<span class="string">","</span>&nbsp;<span class="keyword">else</span>&nbsp;<span class="string">""</span>)<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"{@[&nbsp;"</span>;<br>
+&nbsp;&nbsp;<span class="constructor">M</span>.iter&nbsp;print_key_value_pair&nbsp;m;<br>
+&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@]}"</span><br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_Gestiondesvariableslibresrenommagealphaquivalenceetsubstitution">Gestion des variables libres, renommage, alpha-équivalence et
+   substitution</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">fv m</code> retourne l'ensemble des variables libres du terme <code class="code">m</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;fv&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.singleton&nbsp;x<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;_&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LBool</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.empty<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bop</span>&nbsp;(_,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pair</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">App</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.union&nbsp;(fv&nbsp;m)&nbsp;(fv&nbsp;n)<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Uop</span>&nbsp;(_,&nbsp;m)&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fst</span>&nbsp;m&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Snd</span>&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fv&nbsp;m<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Let</span>&nbsp;(x,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.(union&nbsp;(fv&nbsp;m)&nbsp;(diff&nbsp;(fv&nbsp;n)&nbsp;(singleton&nbsp;x)))<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">If</span>&nbsp;(m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.(union&nbsp;(union&nbsp;(fv&nbsp;m)&nbsp;(fv&nbsp;n))&nbsp;(fv&nbsp;p))<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fun</span>&nbsp;(x,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">S</span>.(diff&nbsp;(fv&nbsp;m)&nbsp;(singleton&nbsp;x))<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Mathématiquement, un renommage est une fonction partielle finie des
+   identifiants dans les identifiants. En OCaml, on représente une telle
+   fonction partielle finie par un dictionnaire. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">type</span>&nbsp;renaming&nbsp;=&nbsp;identifier&nbsp;<span class="constructor">M</span>.t;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_renaming fmt r</code> affiche le renommage <code class="code">r</code> en utilisant le formateur
+   <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;print_renaming&nbsp;=&nbsp;print_id_map&nbsp;print_id;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">fresh s</code> retourne un identifiant n'appartenant pas à l'ensemble <code class="code">s</code>. **)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;fresh&nbsp;s&nbsp;=<br>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;Il&nbsp;y&nbsp;a&nbsp;une&nbsp;solution&nbsp;beaucoup&nbsp;plus&nbsp;efficace&nbsp;utilisant&nbsp;[S.min_elt].&nbsp;On&nbsp;peut<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encore&nbsp;utiliser&nbsp;un&nbsp;compteur&nbsp;global.&nbsp;*)</span><br>
+&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;loop&nbsp;prefix&nbsp;i&nbsp;=<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;x&nbsp;=&nbsp;prefix&nbsp;^&nbsp;string_of_int&nbsp;i&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">if</span>&nbsp;<span class="constructor">S</span>.mem&nbsp;x&nbsp;s&nbsp;<span class="keyword">then</span>&nbsp;loop&nbsp;prefix&nbsp;(i&nbsp;+&nbsp;1)&nbsp;<span class="keyword">else</span>&nbsp;x<br>
+&nbsp;&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;loop&nbsp;<span class="string">"x"</span>&nbsp;0<br>
+;;<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** À faire : implémenter la substitution ! *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <h3 id="2_valuation">Évaluation</h3> *)</span></td></tr></table><code class="code"><br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** Cette section définit un évaluateur à grands pas pour Marthe++. *)</span></td></tr></table><code class="code"><br>
+<br>
+<span class="keyword">type</span>&nbsp;value&nbsp;=<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VInt</span>&nbsp;<span class="keyword">of</span>&nbsp;int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** entier *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VBool</span>&nbsp;<span class="keyword">of</span>&nbsp;bool&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** booléen *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VPair</span>&nbsp;<span class="keyword">of</span>&nbsp;value&nbsp;*&nbsp;value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** paire *)</span></td></tr></table><code class="code"><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VClo</span>&nbsp;<span class="keyword">of</span>&nbsp;identifier&nbsp;*&nbsp;term&nbsp;*&nbsp;environment&nbsp;</code><table><tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><span class="comment">(** fermeture *)</span></td></tr></table><code class="code"><br>
+<br>
+<span class="keyword">and</span>&nbsp;environment&nbsp;=&nbsp;value&nbsp;<span class="constructor">M</span>.t<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_value fmt v</code> affiche la valeur <code class="code">v</code> en utilisant le formateur
+   <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;print_value&nbsp;fmt&nbsp;v&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;v&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%d"</span>&nbsp;n<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VBool</span>&nbsp;b&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"%b"</span>&nbsp;b<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VPair</span>&nbsp;(v,&nbsp;w)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[(%a,@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_value&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_value&nbsp;w<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VClo</span>&nbsp;(x,&nbsp;m,&nbsp;env)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">Format</span>.fprintf&nbsp;fmt&nbsp;<span class="string">"@[clo(%a,@&nbsp;%a,@&nbsp;%a)@]"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_id&nbsp;x<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_term&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_environment&nbsp;env<br>
+<br>
+</code><table><tr><td></td><td><span class="comment">(** <code class="code">print_environment fmt env</code> affiche l'environnement <code class="code">env</code> en utilisant le
+   formateur <code class="code">fmt</code>. *)</span></td></tr></table><code class="code"><br>
+<span class="keyword">and</span>&nbsp;print_environment&nbsp;fmt&nbsp;env&nbsp;=<br>
+&nbsp;&nbsp;print_id_map&nbsp;print_value&nbsp;fmt&nbsp;env<br>
+;;<br>
+<br>
+<span class="keyword">exception</span>&nbsp;<span class="constructor">Ill_typed</span><br>
+<br>
+<span class="keyword">let</span>&nbsp;<span class="keyword">rec</span>&nbsp;eval&nbsp;env&nbsp;m&nbsp;=<br>
+&nbsp;&nbsp;<span class="keyword">match</span>&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Id</span>&nbsp;x&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">M</span>.find&nbsp;x&nbsp;env<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">VInt</span>&nbsp;n<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">LBool</span>&nbsp;b&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">VBool</span>&nbsp;b<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Bop</span>&nbsp;(op,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;w&nbsp;=&nbsp;eval&nbsp;env&nbsp;n&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;op,&nbsp;v,&nbsp;w&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Add</span>,&nbsp;<span class="constructor">VInt</span>&nbsp;m,&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VInt</span>&nbsp;(m&nbsp;+&nbsp;n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Sub</span>,&nbsp;<span class="constructor">VInt</span>&nbsp;m,&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VInt</span>&nbsp;(m&nbsp;-&nbsp;n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Mul</span>,&nbsp;<span class="constructor">VInt</span>&nbsp;m,&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VInt</span>&nbsp;(m&nbsp;*&nbsp;n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Div</span>,&nbsp;<span class="constructor">VInt</span>&nbsp;m,&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VInt</span>&nbsp;(m&nbsp;/&nbsp;n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">And</span>,&nbsp;<span class="constructor">VBool</span>&nbsp;b1,&nbsp;<span class="constructor">VBool</span>&nbsp;b2&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VBool</span>&nbsp;(b1&nbsp;<span class="keywordsign">&amp;&amp;</span>&nbsp;b2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Or</span>,&nbsp;<span class="constructor">VBool</span>&nbsp;b1,&nbsp;<span class="constructor">VBool</span>&nbsp;b2&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VBool</span>&nbsp;(b1&nbsp;<span class="keywordsign">||</span>&nbsp;b2)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Le</span>,&nbsp;<span class="constructor">VInt</span>&nbsp;m,&nbsp;<span class="constructor">VInt</span>&nbsp;n&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VBool</span>&nbsp;(m&nbsp;&lt;=&nbsp;n)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Uop</span>&nbsp;(op,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;op,&nbsp;v&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Not</span>,&nbsp;<span class="constructor">VBool</span>&nbsp;b&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;<span class="constructor">VBool</span>&nbsp;(not&nbsp;b)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Let</span>&nbsp;(x,&nbsp;m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eval&nbsp;(<span class="constructor">M</span>.add&nbsp;x&nbsp;v&nbsp;env)&nbsp;n<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Pair</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;w&nbsp;=&nbsp;eval&nbsp;env&nbsp;n&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">VPair</span>&nbsp;(v,&nbsp;w)<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fst</span>&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VPair</span>&nbsp;(v,&nbsp;_)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Snd</span>&nbsp;m&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VPair</span>&nbsp;(_,&nbsp;v)&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;v<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">If</span>&nbsp;(m,&nbsp;n,&nbsp;p)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VBool</span>&nbsp;<span class="keyword">true</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;eval&nbsp;env&nbsp;m<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VBool</span>&nbsp;<span class="keyword">false</span>&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;eval&nbsp;env&nbsp;n<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span>&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">Fun</span>&nbsp;(x,&nbsp;m)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="constructor">VClo</span>&nbsp;(x,&nbsp;m,&nbsp;env)<br>
+<br>
+&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">App</span>&nbsp;(m,&nbsp;n)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v&nbsp;=&nbsp;eval&nbsp;env&nbsp;m&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">let</span>&nbsp;v_a&nbsp;=&nbsp;eval&nbsp;env&nbsp;n&nbsp;<span class="keyword">in</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">begin</span>&nbsp;<span class="keyword">match</span>&nbsp;v&nbsp;<span class="keyword">with</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;<span class="constructor">VClo</span>&nbsp;(x,&nbsp;m_f,&nbsp;env_f)&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eval&nbsp;(<span class="constructor">M</span>.add&nbsp;x&nbsp;v_a&nbsp;env_f)&nbsp;m_f<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keywordsign">|</span>&nbsp;_&nbsp;<span class="keywordsign">-&gt;</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raise&nbsp;<span class="constructor">Ill_typed</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">end</span><br>
+;;<br>
+<br>
+<br>
+<span class="comment">(*&nbsp;À&nbsp;commenter/décommenter&nbsp;selon&nbsp;si&nbsp;l'on&nbsp;est&nbsp;dans&nbsp;le&nbsp;top-level&nbsp;ou&nbsp;pas.&nbsp;*)</span><br>
+<span class="comment">(*&nbsp;#install_printer&nbsp;print_term;;<br>
+&nbsp;*&nbsp;#install_printer&nbsp;print_value;;<br>
+&nbsp;*&nbsp;#install_printer&nbsp;print_environment;;&nbsp;*)</span><br>
+</code></body></html>

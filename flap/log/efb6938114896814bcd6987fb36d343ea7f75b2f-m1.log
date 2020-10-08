@@ -1,0 +1,2620 @@
+make: Entering directory '/home/opam/source/flap/tests/m1'
+make[1]: Entering directory '/home/opam/source/flap/tests/m1/hopix/parser/bad'
+========================================================
+In parser/bad
+GOOD: 0/0
+[XFAIL]  01-constructor-application.hopix
+
+INPUT: 
+fun f = True
+
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  02-app2.hopix
+
+INPUT: 
+val drama = eats cat mouse
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  03-app2-2.hopix
+
+INPUT: 
+let h2o = h (o o)
+let h2obis = h [o, o]
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  04-app2-3.hopix
+
+INPUT: 
+let x = f (, 2)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  05-app3.hopix
+
+INPUT: 
+le app3 = f x y z
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  06-lexer-var-id-1.hopix
+
+INPUT: 
+let YouShouldNeverUseThis_Ugly_Way_of_Identifying_THINGS = 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  07-lexer-var-id-2.hopix
+
+INPUT: 
+let ?this_is_far_better_way_to_name_things_2_the_revenge = 0
+OUTPUT: 
+Line 1, characters 4-5: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  08-lexer-all-id-1.hopix
+
+INPUT: 
+fun fine (x y) = 0
+let fine = 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  09-lexer-constr-id-1.hopix
+
+INPUT: 
+let x = True <>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  10-lexer-constr-id-2.hopix
+
+INPUT: 
+let x = Cons (0, Nil : 1)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  100-ref-2.hopix
+
+INPUT: 
+let ill_typed = ref 0 *
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  101-ref-3.hopix
+
+INPUT: 
+let main =
+ let x = ref 0
+ 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  102-ref-4.hopix
+
+INPUT: 
+let main =
+  let y = ref (\x -> x)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  103-ref-5.hopix
+
+INPUT: 
+let main =
+  val y = ref "foo";
+  ref "bar"
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  104-assignment.hopix
+
+INPUT: 
+let main =
+  x = 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  105-assignment-2.hopix
+
+INPUT: 
+let main =
+  (ref 0) :=
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  106-assignment-3.hopix
+
+INPUT: 
+let main =
+  := 3
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  107-assignment-4.hopix
+
+INPUT: 
+let main =
+  \ -> x := 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  108-type-ascription-1.hopix
+
+INPUT: 
+let main =
+ switch you { (me : int) -> me }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  109-type-ascription-2.hopix
+
+INPUT: 
+let main =
+  0 : int
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  11-lexer-constr-id-3.hopix
+
+INPUT: 
+let x = (0,)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  110-type-ascription-3.hopix
+
+INPUT: 
+let main = (\x => x : int -> int)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  111-deref-1.hopix
+
+INPUT: 
+let main =
+  !
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  112-deref-2.hopix
+
+INPUT: 
+let double =
+ ! (! )
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  113-deref-3.hopix
+
+INPUT: 
+let main = !f (); ! (g (0))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  114-while-1.hopix
+
+INPUT: 
+let main =
+  while True { nothing (0) }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  115-while-2.hopix
+
+INPUT: 
+let main =
+  while (True) {
+    while (!x >? 0)
+      x := !x - 1
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  116-for-1.hopix
+
+INPUT: 
+let main =
+  for i in 0 to 10 { nothing (0) }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  117-for-2.hopix
+
+INPUT: 
+let main =
+  for x = (0 to 100) { y := x * 2 + !y }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  12-lexer-label-id-1.hopix
+
+INPUT: 
+let x = t.Some_label
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  12-lexer-label-id-2.hopix
+
+INPUT: 
+let x = { Some_other_label_l33t_AND_GL0RI0US = 0 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[ KO ]   -->  13-type-con-id-1.hopix  should have failed !
+
+INPUT: 
+type Dungeons = CASTLE
+OUTPUT: 
+type Dungeons = CASTLE 
+--------------------------------------------------------
+[XFAIL]  14-type-con-id-2.hopix
+
+INPUT: 
+type that_s_A_GREAT_TYPE = justKO
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  15-int-literal-1.hopix
+
+INPUT: 
+let x =
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  16-int-literal-2.hopix
+
+INPUT: 
+let x = --0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  17-int-literal-3.hopix
+
+INPUT: 
+let x = 1234432112341234123412324321232431
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  18-int-literal-4.hopix
+
+INPUT: 
+let x = 0xcafeBABEBABEcafecafeBABE
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  19-int-literal-5.hopix
+
+INPUT: 
+let x = 0o10101010101010101010101010101010101010101010101010101010101010101010101010101010
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  20-int-literal-6.hopix
+
+INPUT: 
+let x = 0xffffffffffffffffffffffffffffffffffffffff
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  21-char-literal-1.hopix
+
+INPUT: 
+let c = ''
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  22-char-literal-2.hopix
+
+INPUT: 
+let x = '\300'
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  23-char-literal-3.hopix
+
+INPUT: 
+let x = '\p'
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  24-char-literal-4.hopix
+
+INPUT: 
+let x = '\0z64'
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[ KO ]   -->  25-char-literal-5.hopix  should have failed !
+
+INPUT: 
+let x = '''
+OUTPUT: 
+let x = '\''
+--------------------------------------------------------
+[XFAIL]  26-char-literal-6.hopix
+
+INPUT: 
+let x = '\\r'
+
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  27-string-literal-1.hopix
+
+INPUT: 
+let s = " This is exciting. No, not exciting. What do I mean? Worrying.
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[ KO ]   -->  28-string-literal-2.hopix  should have failed !
+
+INPUT: 
+let s = "\nDon't "panic.\nNot the end of the world.\nWell, it could be the end of the world but one thing at a time.\n"
+OUTPUT: 
+let s =
+  "\"\\nDon't \"panic.\\nNot the end of the world.\\nWell, it could be the end of the world but one thing at a time.\\n\""
+--------------------------------------------------------
+[XFAIL]  29-string-literal-3.hopix
+
+INPUT: 
+let = "Python\b\b\b\b\b\bOCaml rocks!\n"
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  30-string-literal-4.hopix
+
+INPUT: 
+let s "This one is a \"Nightmare\"! \0x4A \\ \r \0x2e ' \032"
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  31-type-definition-sum-1.hopix
+
+INPUT: 
+type unit =
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  32-type-definition-sum-2.hopix
+
+INPUT: 
+type color = Red | Black |
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  33-type-definition-sum-3.hopix
+
+INPUT: 
+type option<A> = None | Some (A)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  34-type-definition-sum-4.hopix
+
+INPUT: 
+type pair<`a `b> = Pair(`a, `b)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  35-type-definition-sum-5.hopix
+
+INPUT: 
+type triple<`a, `b, > = Triple (`a, `b, `c)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  36-type-definition-sum-6.hopix
+
+INPUT: 
+type list[`a] = Nil | Cons (`a, list[`a])
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  37-type-definition-sum-7.hopix
+
+INPUT: 
+type closure<`env, `a, `b> = Closure (`env, `env => `a => `b)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  38-type-definition-record-1.hopix
+
+INPUT: 
+type people = { age : int; name : string; firstname : string }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  39-type-definition-record-2.hopix
+
+INPUT: 
+type position = { offset : int }
+type located<`a> = { value = `a, position = position }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  40-type-definition-record-3.hopix
+
+INPUT: 
+type bool = True | False
+
+type collection<`t, `a> = {
+  empty : `t;
+  add   : `a * `t -> `t;
+  map   : (`a -> `a) -> `t -> `t;
+  split : (`a -> bool) -> `t * `t
+}
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  41-external-definition-1.hopix
+
+INPUT: 
+extern print_string : string ->
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  42-external-definition-2.hopix
+
+INPUT: 
+extern concat : [] list<`a> * list<`a> -> list<`a>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  43-external-definition-3.hopix
+
+INPUT: 
+extern superman : [`a, `b] `a -> `b
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  44-value-definition-1.hopix
+
+INPUT: 
+val x = 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  45-value-definition-2.hopix
+
+INPUT: 
+let inconsistency : [`a] ``a = 0
+OUTPUT: 
+Line 1, characters 21-22: Error (during lexing)
+  unexpected character.
+--------------------------------------------------------
+[XFAIL]  46-value-definition-3.hopix
+
+INPUT: 
+let minux =
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  47-instanciation.hopix
+
+INPUT: 
+let x = id<>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  48-instanciation-2.hopix
+
+INPUT: 
+let x = plus <int foo>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  49-instanciation-3.hopix
+
+INPUT: 
+let x = concat <int; foo>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  50-instanciation-4.hopix
+
+INPUT: 
+let x = id <int => int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  51-instanciation-5.hopix
+
+INPUT: 
+let x = map <int : string>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  52-instanciation-6.hopix
+
+INPUT: 
+let x = map <int,, int -> int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  53-instanciation-7.hopix
+
+INPUT: 
+let x = map <list[int], int * int * int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  54-constructor-1.hopix
+
+INPUT: 
+let x = [True]
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  55-constructor-2.hopix
+
+INPUT: 
+let y = Cons <> (0, Nil<int>)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  56-constructor-3.hopix
+
+INPUT: 
+let x = pair<pair<int,>, string> (Pair<int, string> (0, "Wou!"), "Wouha!")
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  57-constructor-4.hopix
+
+INPUT: 
+let some = Some<int> ()
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  58-record-1.hopix
+
+INPUT: 
+let start = { x = 0, }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  59-record-2.hopix
+
+INPUT: 
+let name = { fst = "My"; snd = "Precious" } <string, string>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  60-record-3.hopix
+
+INPUT: 
+let what_s_in_the_box = { box = }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  61-record-projection-1.hopix
+
+INPUT: 
+let x = p.X
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  62-record-projection-2.hopix
+
+INPUT: 
+let y = { x = 0, y = 1 }.
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  63-record-projection-3.hopix
+
+INPUT: 
+let you_silly_boy = "I am not a record".33
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  65-sequence-1.hopix
+
+INPUT: 
+let x = sing (0); eat (0); drink (0); song (
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  66-sequence-2.hopix
+
+INPUT: 
+let x = (foo (0); bar (0)); baz (0))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  67-sequence-3.hopix
+
+INPUT: 
+val x = foo (0); (bar (0); baz (0))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  68-local-definition.hopix
+
+INPUT: 
+let main =
+  let x = 0;;
+  x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  69-local-definition-2.hopix
+
+INPUT: 
+let main =
+  let me = 0
+  let you = 0;
+  play me;
+  play you;
+  you
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  70-local-definition-3.hopix
+
+INPUT: 
+let main =
+  fun f x = x;
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  71-local-definition-4.hopix
+
+INPUT: 
+let main =
+    fun ping _ = pong 0
+    or pong _ = ping 0;
+    ping 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  72-local-definition-5.hopix
+
+INPUT: 
+let bonneteau =
+  fun h (x, y) = g x
+  and g x = f (x, x, x);
+  and f (x, y, z) = y;
+  f (1, 2, 3)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  73-lambda-1.hopix
+
+INPUT: 
+let id = \x . x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  74-lambda-2.hopix
+
+INPUT: 
+let k = \(x y) -> x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  75-lambda-3.hopix
+
+INPUT: 
+let k3 = \(x, y z) -> x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  76-lambda-4.hopix
+
+INPUT: 
+let zero = \__ -> 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  77-application-1.hopix
+
+INPUT: 
+let = id 
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  78-application-2.hopix
+
+INPUT: 
+let compose = ((id id) (id id) id
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  79-application-3.hopix
+
+INPUT: 
+let beta = (\x - x) 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  80-application-4.hopix
+
+INPUT: 
+let eta = \f -> \x ->
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  81-application-5.hopix
+
+INPUT: 
+let omega = \x ->
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  82-application-6.hopix
+
+INPUT: 
+let bad_man = _0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  83-application-7.hopix
+
+INPUT: 
+let invalid = "This is crazy" (0, 1, 3, "Stop this madness!)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  84-infix-application-1.hopix
+
+INPUT: 
+let toto = 0 ++ 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  85-infix-application-2.hopix
+
+INPUT: 
+let harder_than_you_think = a * a / / b * b + c * c
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  86-infix-application-3.hopix
+
+INPUT: 
+let arithmetic_complexity =
+  1 + 2 * 3 / 4 / 5 - 6 - 7 + 8 + 9 * 10 -
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  87-infix-application-4.hopix
+
+INPUT: 
+let cycle_of_life = lion eats giraffe eats grass eats lion ++
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  88-case-1.hopix
+
+INPUT: 
+let style_evaluation =
+  switch (hair_color) {
+  | Red    => Good
+  | Yellow => Good
+  | Brown  => Good
+  | _      => Good
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  89-case-2.hopix
+
+INPUT: 
+let what_is_in_the_box =
+ switch (box) {
+   { box = } -> box
+ }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  90-case-3.hopix
+
+INPUT: 
+let menu =
+  switch (choice) {
+  | Coffee | Tea -> OK
+  | Chocolate -> OK
+  | Beer -> AreYouSure
+  | _ ->
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  91-case-4.hopix
+
+INPUT: 
+let nest =
+  switch (bird) {
+     Nest (Some (bird)) -> bird
+   | Nest (None) -> nothing
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  92-case-5.hopix
+
+INPUT: 
+let main =
+  switch (some_value) {
+  | Some ({ box = _; other_box = (Some (_) & got_you) }) -> got_you
+  | None -> None
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  93-case-6.hopix
+
+INPUT: 
+let omg =
+ switch (some_value) {
+ | "Some string" -> 0
+  'a' -> 2
+ }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  94-case-7.hopix
+
+INPUT: 
+let mono =
+  switch (p) {
+  | (x y) -> x + y
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  95-case-8.hopix
+
+INPUT: 
+let polybox =
+  switch x { { box = y }<int> -> y }
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  96-if-then-else.hopix
+
+INPUT: 
+let main =
+  if True { 0 } else { 1 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  97-if-then-else-2.hopix
+
+INPUT: 
+let main =
+  if (failure 0) {
+    print error_message
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  98-if-then-else-3.hopix
+
+INPUT: 
+let sequence =
+  if (x =? 0) { foo 0
+  } else { if (x <? 0) { bar 0
+    else { if (x >? 0) { baz 0
+  } else { live 0 } } }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  98-if-then-else-4.hopix
+
+INPUT: 
+let inner =
+  if (x =? 0) { if (y =? 1) { 0 } else { 1 } else { 2 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  99-ref-1.hopix
+
+INPUT: 
+let x = ref
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+./01-constructor-application.hopix ./02-app2.hopix ./03-app2-2.hopix ./04-app2-3.hopix ./05-app3.hopix ./06-lexer-var-id-1.hopix ./07-lexer-var-id-2.hopix ./08-lexer-all-id-1.hopix ./09-lexer-constr-id-1.hopix ./10-lexer-constr-id-2.hopix ./100-ref-2.hopix ./101-ref-3.hopix ./102-ref-4.hopix ./103-ref-5.hopix ./104-assignment.hopix ./105-assignment-2.hopix ./106-assignment-3.hopix ./107-assignment-4.hopix ./108-type-ascription-1.hopix ./109-type-ascription-2.hopix ./11-lexer-constr-id-3.hopix ./110-type-ascription-3.hopix ./111-deref-1.hopix ./112-deref-2.hopix ./113-deref-3.hopix ./114-while-1.hopix ./115-while-2.hopix ./116-for-1.hopix ./117-for-2.hopix ./12-lexer-label-id-1.hopix ./12-lexer-label-id-2.hopix ./13-type-con-id-1.hopix ./14-type-con-id-2.hopix ./15-int-literal-1.hopix ./16-int-literal-2.hopix ./17-int-literal-3.hopix ./18-int-literal-4.hopix ./19-int-literal-5.hopix ./20-int-literal-6.hopix ./21-char-literal-1.hopix ./22-char-literal-2.hopix ./23-char-literal-3.hopix ./24-char-literal-4.hopix ./25-char-literal-5.hopix ./26-char-literal-6.hopix ./27-string-literal-1.hopix ./28-string-literal-2.hopix ./29-string-literal-3.hopix ./30-string-literal-4.hopix ./31-type-definition-sum-1.hopix ./32-type-definition-sum-2.hopix ./33-type-definition-sum-3.hopix ./34-type-definition-sum-4.hopix ./35-type-definition-sum-5.hopix ./36-type-definition-sum-6.hopix ./37-type-definition-sum-7.hopix ./38-type-definition-record-1.hopix ./39-type-definition-record-2.hopix ./40-type-definition-record-3.hopix ./41-external-definition-1.hopix ./42-external-definition-2.hopix ./43-external-definition-3.hopix ./44-value-definition-1.hopix ./45-value-definition-2.hopix ./46-value-definition-3.hopix ./47-instanciation.hopix ./48-instanciation-2.hopix ./49-instanciation-3.hopix ./50-instanciation-4.hopix ./51-instanciation-5.hopix ./52-instanciation-6.hopix ./53-instanciation-7.hopix ./54-constructor-1.hopix ./55-constructor-2.hopix ./56-constructor-3.hopix ./57-constructor-4.hopix ./58-record-1.hopix ./59-record-2.hopix ./60-record-3.hopix ./61-record-projection-1.hopix ./62-record-projection-2.hopix ./63-record-projection-3.hopix ./65-sequence-1.hopix ./66-sequence-2.hopix ./67-sequence-3.hopix ./68-local-definition.hopix ./69-local-definition-2.hopix ./70-local-definition-3.hopix ./71-local-definition-4.hopix ./72-local-definition-5.hopix ./73-lambda-1.hopix ./74-lambda-2.hopix ./75-lambda-3.hopix ./76-lambda-4.hopix ./77-application-1.hopix ./78-application-2.hopix ./79-application-3.hopix ./80-application-4.hopix ./81-application-5.hopix ./82-application-6.hopix ./83-application-7.hopix ./84-infix-application-1.hopix ./85-infix-application-2.hopix ./86-infix-application-3.hopix ./87-infix-application-4.hopix ./88-case-1.hopix ./89-case-2.hopix ./90-case-3.hopix ./91-case-4.hopix ./92-case-5.hopix ./93-case-6.hopix ./94-case-7.hopix ./95-case-8.hopix ./96-if-then-else.hopix ./97-if-then-else-2.hopix ./98-if-then-else-3.hopix ./98-if-then-else-4.hopix ./99-ref-1.hopix
+BAD: 115/118
+SCORE: 97%
+make[1]: Leaving directory '/home/opam/source/flap/tests/m1/hopix/parser/bad'
+make[1]: Entering directory '/home/opam/source/flap/tests/m1/hopix/parser/good'
+========================================================
+In parser/good
+[ KO ]   -->  01-constructor-application.hopix
+
+INPUT:
+fun f _ = True
+
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+fun f _ = True 
+--------------------------------------------------------
+[ KO ]   -->  02-app2.hopix
+
+INPUT:
+let drama = eats cat mouse
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let drama = (eats cat) mouse
+--------------------------------------------------------
+[ KO ]   -->  03-app2-2.hopix
+
+INPUT:
+let h2o = h (o o)
+let h2obis = h (o, o)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let h2o = h (o o)
+let h2obis = h (o, o)
+--------------------------------------------------------
+[ KO ]   -->  04-app2-3.hopix
+
+INPUT:
+let x = f (1, 2)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = f (1, 2)
+--------------------------------------------------------
+[ KO ]   -->  05-app3.hopix
+
+INPUT:
+let app3 = f x y z
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let app3 = ((f x) y) z
+--------------------------------------------------------
+[ OK ]   06-lexer-var-id-1.hopix
+
+INPUT:
+let youShouldNeverUseThis_Ugly_Way_of_Identifying_THINGS = 0
+OUTPUT: 
+let youShouldNeverUseThis_Ugly_Way_of_Identifying_THINGS = 0
+EXPECTED: 
+let youShouldNeverUseThis_Ugly_Way_of_Identifying_THINGS = 0
+--------------------------------------------------------
+[ OK ]   07-lexer-var-id-2.hopix
+
+INPUT:
+let this_is_far_better_way_to_name_things_2_the_revenge = 0
+OUTPUT: 
+let this_is_far_better_way_to_name_things_2_the_revenge = 0
+EXPECTED: 
+let this_is_far_better_way_to_name_things_2_the_revenge = 0
+--------------------------------------------------------
+[ KO ]   -->  08-lexer-all-id-1.hopix
+
+INPUT:
+fun fine (x, y) = 0
+let fine = 0
+OUTPUT: 
+def fine (x, y) = 0 
+let fine = 0
+EXPECTED: 
+fun fine (x, y) = 0 
+let fine = 0
+--------------------------------------------------------
+[ KO ]   -->  09-lexer-constr-id-1.hopix
+
+INPUT:
+let x = True
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = True
+--------------------------------------------------------
+[ KO ]   -->  10-lexer-constr-id-2.hopix
+
+INPUT:
+let x = Cons (0, Nil (1))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = Cons(0, Nil(1))
+--------------------------------------------------------
+[ KO ]   -->  100-ref-2.hopix
+
+INPUT:
+let ill_typed = ref 0 * 1
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let ill_typed = (ref 0 * 1)
+--------------------------------------------------------
+[ KO ]   -->  101-ref-3.hopix
+
+INPUT:
+let main =
+ let x = ref 0;
+ 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = let x = (ref 0) ; 0
+--------------------------------------------------------
+[ KO ]   -->  102-ref-4.hopix
+
+INPUT:
+let main =
+  let y = ref (\x -> x);
+  y
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = let y = (ref (\ x -> x)) ; y
+--------------------------------------------------------
+[ KO ]   -->  103-ref-5.hopix
+
+INPUT:
+let main =
+  let y = ref "foo";
+  ref "bar"
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = let y = (ref "foo") ; ref "bar"
+--------------------------------------------------------
+[ KO ]   -->  104-assignment.hopix
+
+INPUT:
+let main =
+  x := 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = x := 0
+--------------------------------------------------------
+[ KO ]   -->  105-assignment-2.hopix
+
+INPUT:
+let main =
+  (ref 0) := 1
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (ref 0) := 1
+--------------------------------------------------------
+[ KO ]   -->  106-assignment-3.hopix
+
+INPUT:
+let main =
+  f 0 := 3
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (f 0) := 3
+--------------------------------------------------------
+[ KO ]   -->  107-assignment-4.hopix
+
+INPUT:
+let main =
+  \x -> x := 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = \ x -> (x := 0)
+--------------------------------------------------------
+[ KO ]   -->  108-type-ascription-1.hopix
+
+INPUT:
+let main =
+ switch (you) { (me : int) -> me }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = switch (you) { | (me : int) -> me }
+--------------------------------------------------------
+[ KO ]   -->  109-type-ascription-2.hopix
+
+INPUT:
+let main =
+  (0 : int)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (0 : int)
+--------------------------------------------------------
+[ KO ]   -->  11-lexer-constr-id-3.hopix
+
+INPUT:
+let x = (0, 1)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = (0, 1)
+--------------------------------------------------------
+[ KO ]   -->  110-type-ascription-3.hopix
+
+INPUT:
+let main = (\x -> x : int -> int)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (\ x -> x : int -> int)
+--------------------------------------------------------
+[ KO ]   -->  111-deref-1.hopix
+
+INPUT:
+let main =
+  ! x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (! x)
+--------------------------------------------------------
+[ KO ]   -->  112-deref-2.hopix
+
+INPUT:
+let double =
+ ! (! x)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let double = (! ((! x)))
+--------------------------------------------------------
+[ KO ]   -->  113-deref-3.hopix
+
+INPUT:
+let main = !f (0); ! (g (0))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = (((! f)) 0); ((! (g 0)))
+--------------------------------------------------------
+[ KO ]   -->  114-while-1.hopix
+
+INPUT:
+let main =
+  while (True) { nothing (0) }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = while (True) { nothing 0 }
+--------------------------------------------------------
+[ KO ]   -->  115-while-2.hopix
+
+INPUT:
+let main =
+  while (True) {
+    while (!x >? 0) {
+      x := !x - 1
+    }
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main =
+  while (True) { while (((! x) >? 0)) { x := ((! x) - 1) } }
+--------------------------------------------------------
+[ KO ]   -->  116-for-1.hopix
+
+INPUT:
+let main =
+  for i in (0 to 10) { nothing (0) }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = for i in (0 to 10) { nothing 0 }
+--------------------------------------------------------
+[ KO ]   -->  117-for-2.hopix
+
+INPUT:
+let main =
+  for x in (0 to 100) { y := x * 2 + !y }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = for x in (0 to 100) { y := ((x * 2) + (! y)) }
+--------------------------------------------------------
+[ KO ]   -->  12-lexer-label-id-1.hopix
+
+INPUT:
+let x = t.some_label
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = t.some_label
+--------------------------------------------------------
+[ KO ]   -->  12-lexer-label-id-2.hopix
+
+INPUT:
+let x = { some_other_label_l33t_AND_GL0RI0US = 0 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = {some_other_label_l33t_AND_GL0RI0US = 0}
+--------------------------------------------------------
+[ KO ]   -->  13-type-con-id-1.hopix
+
+INPUT:
+type dungeons = CASTLE
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type dungeons =  CASTLE 
+--------------------------------------------------------
+[ KO ]   -->  14-type-con-id-2.hopix
+
+INPUT:
+type that_s_A_GREAT_TYPE = JustOK
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type that_s_A_GREAT_TYPE =  JustOK 
+--------------------------------------------------------
+[ OK ]   15-int-literal-1.hopix
+
+INPUT:
+let x = 0
+OUTPUT: 
+let x = 0
+EXPECTED: 
+let x = 0
+--------------------------------------------------------
+[ OK ]   16-int-literal-2.hopix
+
+INPUT:
+let x = -0
+OUTPUT: 
+let x = 0
+EXPECTED: 
+let x = 0
+--------------------------------------------------------
+[ OK ]   17-int-literal-3.hopix
+
+INPUT:
+let x = 12344321
+OUTPUT: 
+let x = 12344321
+EXPECTED: 
+let x = 12344321
+--------------------------------------------------------
+[ OK ]   18-int-literal-4.hopix
+
+INPUT:
+let x = 0xcafeBABE
+OUTPUT: 
+let x = 3405691582
+EXPECTED: 
+let x = 3405691582
+--------------------------------------------------------
+[ OK ]   19-int-literal-5.hopix
+
+INPUT:
+let x = 0o10101010
+OUTPUT: 
+let x = 2130440
+EXPECTED: 
+let x = 2130440
+--------------------------------------------------------
+[ OK ]   20-int-literal-6.hopix
+
+INPUT:
+let x = 0o12345670
+OUTPUT: 
+let x = 2739128
+EXPECTED: 
+let x = 2739128
+--------------------------------------------------------
+[ KO ]   -->  21-char-literal-1.hopix
+
+INPUT:
+let c = 'a'
+OUTPUT: 
+let c = '\''
+EXPECTED: 
+let c = 'a'
+--------------------------------------------------------
+[ KO ]   -->  22-char-literal-2.hopix
+
+INPUT:
+let x = '\000'
+OUTPUT: 
+let x = '\''
+EXPECTED: 
+let x = '\000'
+--------------------------------------------------------
+[ KO ]   -->  23-char-literal-3.hopix
+
+INPUT:
+let x = '\t'
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+EXPECTED: 
+let x = '\t'
+--------------------------------------------------------
+[ KO ]   -->  24-char-literal-4.hopix
+
+INPUT:
+let x = '\0x64'
+OUTPUT: 
+let x = '\''
+EXPECTED: 
+let x = 'd'
+--------------------------------------------------------
+[ KO ]   -->  25-char-literal-5.hopix
+
+INPUT:
+let x = '\''
+OUTPUT: 
+Line 1, characters 11-12: Error (during lexing)
+  unexpected character.
+EXPECTED: 
+let x = '\''
+--------------------------------------------------------
+[ KO ]   -->  26-char-literal-6.hopix
+
+INPUT:
+let x = '\r'
+let y = '\b'
+OUTPUT: 
+Line 1, characters 8-9: Error (during lexing)
+  unexpected character.
+EXPECTED: 
+let x = '\r'
+let y = '\b'
+--------------------------------------------------------
+[ KO ]   -->  27-string-literal-1.hopix
+
+INPUT:
+let s = " This is exciting. No, not exciting. What do I mean? Worrying."
+OUTPUT: 
+let s =
+  "\" This is exciting. No, not exciting. What do I mean? Worrying.\""
+EXPECTED: 
+let s =
+  " This is exciting. No, not exciting. What do I mean? Worrying."
+--------------------------------------------------------
+[ KO ]   -->  28-string-literal-2.hopix
+
+INPUT:
+let s = "\nDon't panic.\nNot the end of the world.\nWell, it could be the end of the world but one thing at a time.\n"
+OUTPUT: 
+let s =
+  "\"\\nDon't panic.\\nNot the end of the world.\\nWell, it could be the end of the world but one thing at a time.\\n\""
+EXPECTED: 
+let s =
+  "\nDon't panic.\nNot the end of the world.\nWell, it could be the end of the world but one thing at a time.\n"
+--------------------------------------------------------
+[ KO ]   -->  29-string-literal-3.hopix
+
+INPUT:
+let s = "Python\b\b\b\b\b\bOCaml rocks!\n"
+OUTPUT: 
+let s = "\"Python\\b\\b\\b\\b\\b\\bOCaml rocks!\\n\""
+EXPECTED: 
+let s = "Python\b\b\b\b\b\bOCaml rocks!\n"
+--------------------------------------------------------
+[ KO ]   -->  30-string-literal-4.hopix
+
+INPUT:
+let s = "This one is a \"Nightmare\"! \0x4A \\ \r \0x2e ' \032"
+OUTPUT: 
+let s =
+  "\"This one is a \\\"Nightmare\\\"! \\0x4A \\\\ \\r \\0x2e ' \\032\""
+EXPECTED: 
+let s = "This one is a \"Nightmare\"! J \\ \r . '  "
+--------------------------------------------------------
+[ KO ]   -->  31-type-definition-sum-1.hopix
+
+INPUT:
+type unit = Unit
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type unit =  Unit 
+--------------------------------------------------------
+[ KO ]   -->  32-type-definition-sum-2.hopix
+
+INPUT:
+type color = Red | Black | White
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type color =  Red  | Black  | White 
+--------------------------------------------------------
+[ KO ]   -->  33-type-definition-sum-3.hopix
+
+INPUT:
+type option<`a> = None | Some (`a)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type option<`a> =  None  | Some (`a) 
+--------------------------------------------------------
+[ KO ]   -->  34-type-definition-sum-4.hopix
+
+INPUT:
+type pair<`a, `b> = Pair(`a, `b)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type pair<`a `b> =  Pair (`a, `b) 
+--------------------------------------------------------
+[ KO ]   -->  35-type-definition-sum-5.hopix
+
+INPUT:
+type triple<`a, `b, `c> = Triple (`a, `b, `c)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type triple<`a `b `c> =  Triple (`a, `b, `c) 
+--------------------------------------------------------
+[ KO ]   -->  36-type-definition-sum-6.hopix
+
+INPUT:
+type list<`a> = Nil | Cons (`a, list<`a>)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type list<`a> =  Nil  | Cons (`a, list<`a>) 
+--------------------------------------------------------
+[ KO ]   -->  37-type-definition-sum-7.hopix
+
+INPUT:
+type closure<`env, `a, `b> = Closure (`env, `env -> `a -> `b)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type closure<`env `a `b> =  Closure (`env, `env -> (`a -> `b)) 
+--------------------------------------------------------
+[ KO ]   -->  38-type-definition-record-1.hopix
+
+INPUT:
+type people = { age : int, name : string, firstname : string }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type people =
+  {
+  age : int  , name : string  , firstname : string }
+--------------------------------------------------------
+[ KO ]   -->  39-type-definition-record-2.hopix
+
+INPUT:
+type position = { offset : int }
+type located<`a> = { value : `a, position : position }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type position =
+  {
+  offset : int }
+type located<`a> =
+  {
+  value : `a  , position : position }
+--------------------------------------------------------
+[ KO ]   -->  40-type-definition-record-3.hopix
+
+INPUT:
+type bool = True | False
+
+type collection<`t, `a> = {
+  empty : `t,
+  add   : `a * `t -> `t,
+  map   : (`a -> `a) -> `t -> `t,
+  split : (`a -> bool) -> `t * `t
+}
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+type bool =
+  
+  True  | False 
+type collection<`t `a> =
+  {
+  empty : `t
+   , add : (`a * `t) -> `t
+   , map : (`a -> `a) -> (`t -> `t)
+   , split : (`a -> bool) -> (`t * `t)
+  }
+--------------------------------------------------------
+[ KO ]   -->  41-external-definition-1.hopix
+
+INPUT:
+extern print_string : string -> unit
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+extern print_string : string -> unit
+--------------------------------------------------------
+[ KO ]   -->  42-external-definition-2.hopix
+
+INPUT:
+extern concat : [`a] list<`a> * list<`a> -> list<`a>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+extern concat : [`a](list<`a> * list<`a>) -> list<`a>
+--------------------------------------------------------
+[ KO ]   -->  43-external-definition-3.hopix
+
+INPUT:
+extern superman : [`a `b] `a -> `b
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+extern superman : [`a `b]`a -> `b
+--------------------------------------------------------
+[ OK ]   44-value-definition-1.hopix
+
+INPUT:
+let x = 0
+OUTPUT: 
+let x = 0
+EXPECTED: 
+let x = 0
+--------------------------------------------------------
+[ KO ]   -->  45-value-definition-2.hopix
+
+INPUT:
+let inconsistency : [`a] a = 0
+OUTPUT: 
+Line 1, characters 21-22: Error (during lexing)
+  unexpected character.
+EXPECTED: 
+let inconsistency : [`a]a = 0
+--------------------------------------------------------
+[ OK ]   46-value-definition-3.hopix
+
+INPUT:
+let minux = 0
+OUTPUT: 
+let minux = 0
+EXPECTED: 
+let minux = 0
+--------------------------------------------------------
+[ KO ]   -->  47-instanciation.hopix
+
+INPUT:
+let x = id<`a>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = id < `a >
+--------------------------------------------------------
+[ KO ]   -->  48-instanciation-2.hopix
+
+INPUT:
+let x = plus <int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = plus < int >
+--------------------------------------------------------
+[ KO ]   -->  49-instanciation-3.hopix
+
+INPUT:
+let x = concat <int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = concat < int >
+--------------------------------------------------------
+[ KO ]   -->  50-instanciation-4.hopix
+
+INPUT:
+let x = id <int -> int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = id < (int -> int) >
+--------------------------------------------------------
+[ KO ]   -->  51-instanciation-5.hopix
+
+INPUT:
+let x = map <int, string>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = map < int, string >
+--------------------------------------------------------
+[ KO ]   -->  52-instanciation-6.hopix
+
+INPUT:
+let x = map <int, int -> int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = map < int, (int -> int) >
+--------------------------------------------------------
+[ KO ]   -->  53-instanciation-7.hopix
+
+INPUT:
+let x = map <list<int>, int * int * int>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = map < list<int>, ((int * int) * int) >
+--------------------------------------------------------
+[ KO ]   -->  54-constructor-1.hopix
+
+INPUT:
+let x = True
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = True
+--------------------------------------------------------
+[ KO ]   -->  55-constructor-2.hopix
+
+INPUT:
+let y = Cons <int> (0, Nil<int>)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let y = Cons < int >(0, Nil < int >)
+--------------------------------------------------------
+[ KO ]   -->  56-constructor-3.hopix
+
+INPUT:
+let x = pair<pair<int, string>, string> (Pair<int, string> (0, "Wou!"), "Wouha!")
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x =
+  pair <
+  pair<int, string>,
+  string
+  >
+  (Pair < int, string >(0, "Wou!"), "Wouha!")
+--------------------------------------------------------
+[ KO ]   -->  57-constructor-4.hopix
+
+INPUT:
+let some = Some<int> (73)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let some = Some < int >(73)
+--------------------------------------------------------
+[ KO ]   -->  58-record-1.hopix
+
+INPUT:
+let start = { x = 0, y = 0 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let start = {x = 0, y = 0}
+--------------------------------------------------------
+[ KO ]   -->  59-record-2.hopix
+
+INPUT:
+let name = { fst = "My", snd = "Precious" } <string, string>
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let name = {fst = "My", snd = "Precious"} < string, string >
+--------------------------------------------------------
+[ KO ]   -->  60-record-3.hopix
+
+INPUT:
+let what_s_in_the_box = { box = "Mystery" }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let what_s_in_the_box = {box = "Mystery"}
+--------------------------------------------------------
+[ KO ]   -->  61-record-projection-1.hopix
+
+INPUT:
+let x = p.x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = p.x
+--------------------------------------------------------
+[ KO ]   -->  62-record-projection-2.hopix
+
+INPUT:
+let y = { x = 0, y = 1 }.y
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let y = {x = 0, y = 1}.y
+--------------------------------------------------------
+[ KO ]   -->  63-record-projection-3.hopix
+
+INPUT:
+let you_silly_boy = "I am not a record".song
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let you_silly_boy = "I am not a record".song
+--------------------------------------------------------
+[ KO ]   -->  65-sequence-1.hopix
+
+INPUT:
+let x = sing (0); eat (0); drink (0); song (0)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = (sing 0); ((eat 0); ((drink 0); (song 0)))
+--------------------------------------------------------
+[ KO ]   -->  66-sequence-2.hopix
+
+INPUT:
+let x = (foo (0); bar (0)); baz (0)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = ((foo 0); (bar 0)); (baz 0)
+--------------------------------------------------------
+[ KO ]   -->  67-sequence-3.hopix
+
+INPUT:
+let x = foo (0); (bar (0); baz (0))
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = (foo 0); ((bar 0); (baz 0))
+--------------------------------------------------------
+[ KO ]   -->  68-local-definition.hopix
+
+INPUT:
+let main =
+  let x = 0;
+  x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = let x = 0 ; x
+--------------------------------------------------------
+[ KO ]   -->  69-local-definition-2.hopix
+
+INPUT:
+let main =
+  let me = 0;
+  let you = 0;
+  play me;
+  play you;
+  you
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main =
+  let me = 0 ; let you = 0 ; (play me); ((play you); you)
+--------------------------------------------------------
+[ KO ]   -->  70-local-definition-3.hopix
+
+INPUT:
+let main =
+  fun f x = x;
+  f 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = fun f x = x  ; f 0
+--------------------------------------------------------
+[ KO ]   -->  71-local-definition-4.hopix
+
+INPUT:
+let main =
+    fun ping _ = pong 0
+    and pong _ = ping 0;
+    ping 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = fun ping _ = (pong 0) and pong _ = (ping 0) ; ping 0
+--------------------------------------------------------
+[ KO ]   -->  72-local-definition-5.hopix
+
+INPUT:
+let bonneteau =
+  fun h (x, y) = g x
+  and g x = f (x, x, x)
+  and f (x, y, z) = y;
+  f (1, 2, 3)
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let bonneteau =
+  fun h (x, y) = (g x)
+    and g x = (f (x, x, x))
+    and f (x, y, z) = y
+    ;
+  f (1, 2, 3)
+--------------------------------------------------------
+[ KO ]   -->  73-lambda-1.hopix
+
+INPUT:
+let id = \x -> x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let id = \ x -> x
+--------------------------------------------------------
+[ KO ]   -->  74-lambda-2.hopix
+
+INPUT:
+let k = \(x, y) -> x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let k = \ (x, y) -> x
+--------------------------------------------------------
+[ KO ]   -->  75-lambda-3.hopix
+
+INPUT:
+let k3 = \(x, y, z) -> x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let k3 = \ (x, y, z) -> x
+--------------------------------------------------------
+[ KO ]   -->  76-lambda-4.hopix
+
+INPUT:
+let zero = \_ -> 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let zero = \ _ -> 0
+--------------------------------------------------------
+[ KO ]   -->  77-application-1.hopix
+
+INPUT:
+let zero = id 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let zero = id 0
+--------------------------------------------------------
+[ KO ]   -->  78-application-2.hopix
+
+INPUT:
+let compose = ((id id) (id id)) id
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let compose = ((id id) (id id)) id
+--------------------------------------------------------
+[ KO ]   -->  79-application-3.hopix
+
+INPUT:
+let beta = (\x -> x) 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let beta = (\ x -> x) 0
+--------------------------------------------------------
+[ KO ]   -->  80-application-4.hopix
+
+INPUT:
+let eta = \f -> \x -> f x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let eta = \ f -> (\ x -> (f x))
+--------------------------------------------------------
+[ KO ]   -->  81-application-5.hopix
+
+INPUT:
+let omega = \x -> x x
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let omega = \ x -> (x x)
+--------------------------------------------------------
+[ KO ]   -->  82-application-6.hopix
+
+INPUT:
+let bad_man = 0 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let bad_man = 0 0
+--------------------------------------------------------
+[ KO ]   -->  83-application-7.hopix
+
+INPUT:
+let invalid = "This is crazy" (0, 1, 3, "Stop this madness!")
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let invalid = "This is crazy" (0, 1, 3, "Stop this madness!")
+--------------------------------------------------------
+[ KO ]   -->  84-infix-application-1.hopix
+
+INPUT:
+let toto = 0 + 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let toto = (0 + 0)
+--------------------------------------------------------
+[ KO ]   -->  85-infix-application-2.hopix
+
+INPUT:
+let harder_than_you_think = a * a + b * b + c * c
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let harder_than_you_think = (((a * a) + (b * b)) + (c * c))
+--------------------------------------------------------
+[ KO ]   -->  86-infix-application-3.hopix
+
+INPUT:
+let arithmetic_complexity =
+  1 + 2 * 3 / 4 / 5 - 6 - 7 + 8 + 9 * 10
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let arithmetic_complexity =
+  (((((1 + (((2 * 3) / 4) / 5)) - 6) - 7) + 8) + (9 * 10))
+--------------------------------------------------------
+[ KO ]   -->  87-infix-application-4.hopix
+
+INPUT:
+let cycle_of_life = lion eats giraffe eats grass eats lion
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let cycle_of_life =
+  (((((lion eats) giraffe) eats) grass) eats) lion
+--------------------------------------------------------
+[ KO ]   -->  88-case-1.hopix
+
+INPUT:
+let style_evaluation =
+  switch (hair_color) {
+  | Red    -> Good
+  | Yellow -> Good
+  | Brown  -> Good
+  | _      -> Good
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let style_evaluation =
+  switch (hair_color) {
+  | Red -> Good | Yellow -> Good | Brown -> Good | _ -> Good
+  }
+--------------------------------------------------------
+[ KO ]   -->  89-case-2.hopix
+
+INPUT:
+let what_is_in_the_box =
+ switch (box) {
+   { box = box } -> box
+ }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let what_is_in_the_box = switch (box) { | {box = box}  -> box }
+--------------------------------------------------------
+[ KO ]   -->  90-case-3.hopix
+
+INPUT:
+let menu =
+  switch (choice) {
+  | Coffee | Tea -> OK
+  | Chocolate -> OK
+  | Beer -> AreYouSure
+  | _ -> KO
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let menu =
+  switch (choice) {
+  | (Coffee | Tea) -> OK
+  | Chocolate -> OK
+  | Beer -> AreYouSure
+  | _ -> KO
+  }
+--------------------------------------------------------
+[ KO ]   -->  91-case-4.hopix
+
+INPUT:
+let nest =
+  switch (bird) {
+     Nest (Some (bird)) -> bird
+   | Nest (None) -> nothing
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let nest =
+  switch (bird) {
+  | Nest(Some(bird)) -> bird | Nest(None) -> nothing
+  }
+--------------------------------------------------------
+[ KO ]   -->  92-case-5.hopix
+
+INPUT:
+let main =
+  switch (some_value) {
+  | Some ({ box = _, other_box = (Some (_) & got_you) }) -> got_you
+  | None -> None
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main =
+  switch (some_value) {
+  | Some({box = _; other_box = (Some(_) & got_you)} ) -> got_you
+  | None -> None
+  }
+--------------------------------------------------------
+[ KO ]   -->  93-case-6.hopix
+
+INPUT:
+let omg =
+ switch (some_value) {
+ | "Some string" -> 0
+ | 0 -> 1
+ | 'a' -> 2
+ }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let omg =
+  switch (some_value) { | "Some string" -> 0 | 0 -> 1 | 'a' -> 2 }
+--------------------------------------------------------
+[ KO ]   -->  94-case-7.hopix
+
+INPUT:
+let mono =
+  switch (p) {
+  | (x, y) -> x + y
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let mono = switch (p) { | (x, y) -> ((x + y)) }
+--------------------------------------------------------
+[ KO ]   -->  95-case-8.hopix
+
+INPUT:
+let polybox =
+  switch (x) { { box = y }<int> -> y }
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let polybox = switch (x) { | {box = y}  < int > -> y }
+--------------------------------------------------------
+[ KO ]   -->  96-if-then-else.hopix
+
+INPUT:
+let main =
+  if (True) { 0 } else { 1 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main = if (True) {0} else {1}
+--------------------------------------------------------
+[ KO ]   -->  97-if-then-else-2.hopix
+
+INPUT:
+let main =
+  if (failure 0) {
+    print error_message
+  } else {
+    exit EXIT_FAILURE
+  }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let main =
+  if (failure 0) {print error_message} else {exit EXIT_FAILURE}
+--------------------------------------------------------
+[ KO ]   -->  98-if-then-else-3.hopix
+
+INPUT:
+let sequence =
+  if (x =? 0) { foo 0
+  } else { if (x <? 0) { bar 0
+  } else { if (x >? 0) { baz 0
+  } else { live 0 } } }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let sequence =
+  if ((x =? 0)) {foo 0}
+  else
+  {if ((x <? 0)) {bar 0}
+  else
+  {if ((x >? 0)) {baz 0}
+  else
+  {live 0}}}
+--------------------------------------------------------
+[ KO ]   -->  98-if-then-else-4.hopix
+
+INPUT:
+let inner =
+  if (x =? 0) { if (y =? 1) { 0 } else { 1 } } else { 2 }
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let inner = if ((x =? 0)) {if ((y =? 1)) {0} else {1}} else {2}
+--------------------------------------------------------
+[ KO ]   -->  99-ref-1.hopix
+
+INPUT:
+let x = ref 0
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = ref 0
+--------------------------------------------------------
+[ KO ]   -->  999-slam.hopix
+
+INPUT:
+/* /* /* */ /* */ /* /* */ */ */ /* /* */ /* */ /* /* */ */ */ /* */ /* */ ** */
+/******************************************************************************/
+/*                     THE HOPIX PARSING GREAT SLAM                           */
+/******************************************************************************/
+/* /* /* */ /* */ /* /* */ */ */ /* /* */ /* */ /* /* */ */ */ /* */ /* */ ** */
+
+let x = 0
+
+let f = \x -> x
+
+fun g x = x
+
+fun h (x, y) = x + i y
+and i z = h (z, z)
+
+fun arithmetic (x, y, z) =
+    x + y * z + (x + y) * z + z * (x + y)
+
+let some_Int = 12345
+let some_other_Int = 0xCAFEBABE
+let some_other_other_Int = 0b00010101001010
+let yet_another_Int = 0o73210
+
+let some_char = 'a'
+let some_other_char = '\064'
+let some_other_other_char = '\0xaa'
+let yet_another_char = '\t'
+
+let some_String =
+  "N'oubliez pas, car votre vie en d\233pend. Ne clignez pas des yeux. N'y pensez m\234me pas. Clignez et vous \234tes morts. Ils sont rapides, bien plus rapides que vous ne le croyez. Ne leur tournez pas le dos. Ne regardez pas ailleurs. Et surtout, ne clignez pas. Bonne chance."
+
+let some_other_String =
+  "\n\n\t Le Docteur : Vous avez d\233truit l'inscription la plus ancienne de l'univers.\n\n\t River Song : Tu m'y as oblig\233e, tu ne r\233pondais pas au t\233l\233phone.\n\nOups\b\r\n"
+
+let yet_another_String = "Say \"Hello!\""
+
+type int_list = INil | ICons (int, int_list)
+
+type list<`a> =
+| Nil
+| Cons (`a, list<`a>)
+
+type llist<`a> =
+| LNil
+| LCons (`a, unit -> llist<`a>)
+
+type marthe_exp =
+| EInt (int)
+| EAdd (marthe_exp, marthe_exp)
+| ESum (marthe_exp, marthe_exp)
+| EVar (string)
+| ESum (string, marthe_exp, marthe_exp, marthe_exp)
+
+type box = { what_s_in_the_box : int }
+
+type person = { name : string, age : int }
+
+type closure <`env, `a, `b> = { code : `env * `a -> `b, env : `env }
+
+type container_functions<`e, `c, `b> = {
+   map   : (`e -> `a) * `c -> `c,
+   fold  : (`e -> unit) * `c -> unit,
+   weird : `e -> `c * `e -> `b
+}
+
+let id
+: [`a] `a -> `a
+= \x -> x
+
+let id_int = id <int>
+
+let stable = id <int> (37)
+
+let compose
+: [`a `b `c] (`a -> `b) * (`b -> `c) -> (`a -> `c)
+= \(f, g) -> \x -> (f (g x) : `c)
+
+let id_id_id = compose <int, int, int> (id, id)
+
+let id_id_id_2 = compose <int -> int, int -> int, int -> int> (id, id)
+
+let an_empty_list = Nil<int>
+
+let a_cool_list = Cons<int> (1, Cons <int> (1, an_empty_list))
+
+let a_person = { name = "Luke", age = 28 }
+
+let a_name = a_person.name
+
+let main =
+    start_with_this (0);
+    do_that ("foo", "bar");
+    conclude (0)
+
+let computation =
+    let y = 42;
+    let z = 13;
+    compute (0)
+
+fun : [`a] list<`a> -> int
+len l = switch (l) {
+| Nil<`a> -> 0
+| Cons<`a> (x, xs) -> 1 + len<`a> (xs)
+}
+
+fun fact n =
+  if (n =? 0) { 1 }
+  else { if (n =? 1) { 1 }
+  else { if (n =? 2) { 2 }
+  else { fact (n - 1) * n } } }
+
+fun ifact n =
+  let accu = ref 1;
+  let k = ref n;
+  while (!k >? 0) {
+    accu := !accu * !k;
+    k := !k - 1
+  };
+  !accu
+
+fun ifact2 (n) =
+  let accu = ref 1;
+  for k in (1 to n) {
+     accu := !accu * k
+  };
+  !accu
+
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+EXPECTED: 
+let x = 0
+let f = \ x -> x
+fun g x = x 
+fun h (x, y) = ((x + i y)) and i z = (h (z, z))
+fun arithmetic
+  (x, y, z) =
+  ((((x + (y * z)) + ((x + y) * z)) + (z * (x + y))))
+
+let some_Int = 12345
+let some_other_Int = 3405691582
+let some_other_other_Int = 1354
+let yet_another_Int = 30344
+let some_char = 'a'
+let some_other_char = '@'
+let some_other_other_char = '\170'
+let yet_another_char = '\t'
+let some_String =
+  "N'oubliez pas, car votre vie en d\233pend. Ne clignez pas des yeux. N'y pensez m\234me pas. Clignez et vous \234tes morts. Ils sont rapides, bien plus rapides que vous ne le croyez. Ne leur tournez pas le dos. Ne regardez pas ailleurs. Et surtout, ne clignez pas. Bonne chance."
+let some_other_String =
+  "\n\n\t Le Docteur : Vous avez d\233truit l'inscription la plus ancienne de l'univers.\n\n\t River Song : Tu m'y as oblig\233e, tu ne r\233pondais pas au t\233l\233phone.\n\nOups\b\r\n"
+let yet_another_String = "Say \"Hello!\""
+type int_list =
+  
+  INil  | ICons (int, int_list) 
+type list<`a> =
+  
+  Nil  | Cons (`a, list<`a>) 
+type llist<`a> =
+  
+  LNil  | LCons (`a, unit -> llist<`a>) 
+type marthe_exp =
+  
+  EInt (int)
+   | EAdd (marthe_exp, marthe_exp)
+   | ESum (marthe_exp, marthe_exp)
+   | EVar (string)
+   | ESum (string, marthe_exp, marthe_exp, marthe_exp)
+  
+type box =
+  {
+  what_s_in_the_box : int }
+type person =
+  {
+  name : string  , age : int }
+type closure<`env `a `b> =
+  {
+  code : (`env * `a) -> `b  , env : `env }
+type container_functions<`e `c `b> =
+  {
+  map : (`e -> `a * `c) -> `c
+   , fold : (`e -> unit * `c) -> unit
+   , weird : `e -> ((`c * `e) -> `b)
+  }
+let id : [`a]`a -> `a = \ x -> x
+let id_int = id < int >
+let stable = id < int > 37
+let compose : [`a `b `c](`a -> `b * `b -> `c) -> (`a -> `c) =
+  \ (f, g) -> (\ x -> (f (g x) : `c))
+let id_id_id = compose < int, int, int > (id, id)
+let id_id_id_2 =
+  compose < (int -> int), (int -> int), (int -> int) > (id, id)
+let an_empty_list = Nil < int >
+let a_cool_list =
+  Cons < int >(1, Cons < int >(1, an_empty_list))
+let a_person = {name = "Luke", age = 28}
+let a_name = a_person.name
+let main =
+  (start_with_this 0); ((do_that ("foo", "bar")); (conclude 0))
+let computation = let y = 42 ; let z = 13 ; compute 0
+fun : [`a]list<`a> -> int len
+  l =
+  (switch (l) {
+  | Nil < `a > -> 0 | Cons < `a >(x, xs) -> ((1 + len < `a > xs))
+  })
+
+fun fact
+  n =
+  (if ((n =? 0)) {1}
+  else
+  {if ((n =? 1)) {1}
+  else
+  {if ((n =? 2)) {2}
+  else
+  {(fact ((n - 1))
+  *
+  n)}}})
+
+fun ifact
+  n =
+  (let accu = (ref 1) ;
+  let k = (ref n) ;
+  while
+    (((! k)
+    >?
+    0))
+    { (accu := ((! accu) * (! k))); (k := ((! k) - 1)) };
+  ((! accu)))
+
+fun ifact2
+  n =
+  (let accu = (ref 1) ;
+  for k in (1 to n) { accu := ((! accu) * k) }; ((! accu)))
+
+--------------------------------------------------------
+GOOD: 10/119
+SCORE: 8%
+
+BAD: 0/0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m1/hopix/parser/good'
+--------------------------------------------------------
+Global results:
+BAD:   115 / 118
+GOOD:  10 / 119
+SCORE: 52%
+--------------------------------------------------------
+make: Leaving directory '/home/opam/source/flap/tests/m1'

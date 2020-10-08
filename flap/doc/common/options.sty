@@ -1,0 +1,72 @@
+%-----------------------------------------------------------------------------%
+%                                 Hyperref
+%-----------------------------------------------------------------------------%
+
+\hypersetup{
+    bookmarks=true,         % show bookmarks bar?
+    unicode=false,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={My title},    % title
+    pdfauthor={Author},     % author
+    pdfsubject={Subject},   % subject of the document
+    pdfcreator={Creator},   % creator of the document
+    pdfproducer={Producer}, % producer of the document
+    pdfkeywords={keyword1, key2, key3}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links (change box color with linkbordercolor)
+    citecolor=green,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=cyan           % color of external links
+}
+%-----------------------------------------------------------------------------%
+%                                   Main fonts
+%-----------------------------------------------------------------------------%
+\usepackage[libertine,cmintegrals,cmbraces,vvarbb]{newtxmath}
+
+%-----------------------------------------------------------------------------%
+%                                   Listings
+%-----------------------------------------------------------------------------%
+\newminted[myocaml]{ocaml}{linenos=true, texcl=true, fontsize=\small,escapeinside=//}
+
+\newenvironment{ocaml}
+{\scriptsize\VerbatimEnvironment
+\begin{tcolorbox}[standard jigsaw,opacityback=0,boxrule=0pt,leftrule=1pt,boxsep=-1mm,arc=0pt,auto outer arc]
+%\begin{mdframed}[roundcorner=1pt]
+\begin{myocaml}}
+{\end{myocaml}\end{tcolorbox}}
+
+\newcommand\iocaml[1]{\mintinline{ocaml}{#1}}
+
+\newminted[mycoq]{coq}{linenos=true, texcl=true, fontsize=\small,escapeinside=//}
+
+\newenvironment{coq}
+{\scriptsize\VerbatimEnvironment
+\begin{tcolorbox}[standard jigsaw,opacityback=0,boxrule=0pt,leftrule=1pt,boxsep=-1mm,arc=0pt,auto outer arc]
+\begin{mycoq}}
+{\end{mycoq}\end{tcolorbox}}
+
+\newcommand\icoq[1]{\mintinline{coq}{#1}}
+
+\newminted[myimp]{c}{linenos=true, texcl=true, fontsize=\small,escapeinside=//}
+
+\newenvironment{imp}
+{\scriptsize\VerbatimEnvironment
+\begin{tcolorbox}[standard jigsaw,opacityback=0,boxrule=0pt,leftrule=1pt,boxsep=-1mm,arc=0pt,auto outer arc]
+\begin{myimp}}
+{\end{myimp}\end{tcolorbox}}
+
+\newcommand\iimp[1]{\mintinline{c}{#1}}
+
+\newminted[myshell]{bash}{linenos=true, texcl=true, fontsize=\small}
+
+\newenvironment{shell}
+{\scriptsize\VerbatimEnvironment
+\begin{tcolorbox}[standard jigsaw,opacityback=0,boxrule=0pt,leftrule=1pt,boxsep=-1mm,arc=0pt,auto outer arc]
+\begin{myshell}}
+{\end{myshell}\end{tcolorbox}}
+
+\newcommand\ishell[1]{\mintinline{bash}{#1}}

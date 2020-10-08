@@ -1,0 +1,23 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthe" rel="Chapter" href="Marthe.html"><title>Marthe.fv</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> fv m =
+  <span class="keyword">match</span> m <span class="keyword">with</span>
+  <span class="keywordsign">|</span> <span class="constructor">LInt</span> n <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.empty
+  <span class="keywordsign">|</span> <span class="constructor">Id</span> x <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.singleton x
+  <span class="keywordsign">|</span> <span class="constructor">Add</span> (m, n) <span class="keywordsign">|</span> <span class="constructor">Mul</span> (m, n) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.union (fv m) (fv n)
+  <span class="keywordsign">|</span> <span class="constructor">Sum</span> (x, m, n, p) <span class="keywordsign">-&gt;</span>
+     <span class="constructor">S</span>.union
+       (<span class="constructor">S</span>.union (fv m) (fv n))
+       (<span class="constructor">S</span>.diff (fv p) (<span class="constructor">S</span>.singleton x))</code></body></html>

@@ -1,0 +1,1733 @@
+make: Entering directory '/home/opam/source/flap/tests/m3'
+make[1]: Entering directory '/home/opam/source/flap/tests/m3/hopix/typechecker/bad'
+========================================================
+In typechecker/bad
+GOOD: 0/0
+[XFAIL]  01-int-literal.hopix
+
+INPUT: 
+let x : int = 42
+let y : string = -42
+OUTPUT: 
+Line 2, characters 17-20: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  02-arith-01.hopix
+
+INPUT: 
+let x : int = 1 + "foo"
+OUTPUT: 
+Line 1, characters 22-23: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  string
+
+--------------------------------------------------------
+[XFAIL]  03-arith-02.hopix
+
+INPUT: 
+let x : int = 1 * 'a'
+OUTPUT: 
+Line 1, characters 18-21: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  char
+
+--------------------------------------------------------
+[XFAIL]  04-arith-03.hopix
+
+INPUT: 
+let x : int = 'a' - 2
+OUTPUT: 
+Line 1, characters 14-17: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  char
+
+--------------------------------------------------------
+[XFAIL]  06-arith-04.hopix
+
+INPUT: 
+let x : int = 'a' / 'a'
+OUTPUT: 
+Line 1, characters 14-17: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  char
+
+--------------------------------------------------------
+[XFAIL]  07-arith-05.hopix
+
+INPUT: 
+let x : string = 1 / 2 + 3 * 5 - 6
+OUTPUT: 
+Line 1, characters 17-34: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  08-char-literal.hopix
+
+INPUT: 
+let c : int = 'a'
+OUTPUT: 
+Line 1, characters 14-17: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  char
+
+--------------------------------------------------------
+[XFAIL]  09-char-string.hopix
+
+INPUT: 
+let c : char = "Luke, I may be your father!"
+OUTPUT: 
+Line 1, characters 43-44: Error (typechecking)
+  Type error:
+Expected:
+  char
+Given:
+  string
+
+--------------------------------------------------------
+[XFAIL]  10-local-definition.hopix
+
+INPUT: 
+let main : int =
+    let x : int = 1;
+    y
+OUTPUT: 
+Line 2, characters 4-26: Error (typechecking)
+  Unbound variable y
+--------------------------------------------------------
+[XFAIL]  11-function-definition.hopix
+
+INPUT: 
+fun : int -> string
+    id (x : int) = x
+
+let main : int =
+    id (42)
+OUTPUT: 
+Line 2, characters 19-20: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  12-rec-function-definition.hopix
+
+INPUT: 
+fun : int -> int
+   id (x : int) = id x
+
+let main : int =
+    id "foo"
+OUTPUT: 
+Line 5, characters 11-12: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  string
+
+--------------------------------------------------------
+[XFAIL]  13-mutually-rec-fun-definitions.hopix
+
+INPUT: 
+fun : int -> int
+    double_omega (x : int) =
+    omega (x) (x)
+and : int -> int
+    omega (x: int) =
+    double_omega (x)
+
+let main : int = double_omega 73
+OUTPUT: 
+Line 3, characters 4-13: Error (typechecking)
+  int is not a function, it cannot be applied
+
+--------------------------------------------------------
+[XFAIL]  14-binary-function.hopix
+
+INPUT: 
+fun : int * int -> int
+      fst ((x : int), (y : int)) = x
+
+let main : int = fst (3, 4, 4)
+OUTPUT: 
+Line 4, characters 21-30: Error (typechecking)
+  Type error:
+Expected:
+  int * int
+Given:
+  int * int * int
+
+--------------------------------------------------------
+[XFAIL]  14-binary-rec-function.hopix
+
+INPUT: 
+fun : int * int -> int
+      fst ((x : int), (y : int)) = fst (y, x)
+
+let main : int = fst 3 4
+OUTPUT: 
+Line 4, characters 21-22: Error (typechecking)
+  Type error:
+Expected:
+  int * int
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  15-binary-mutually-rec-function.hopix
+
+INPUT: 
+fun : int * int -> int
+    fst ((x : int), (y : int)) = snd (y, x)
+
+and : int * int -> int
+    snd ((x : int), (y : int)) = fst (x, y)
+
+let main : int = fst 3
+OUTPUT: 
+Line 7, characters 21-22: Error (typechecking)
+  Type error:
+Expected:
+  int * int
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  16-polymorphic-function.hopix
+
+INPUT: 
+fun : [`a] `a -> `a
+      id (x : int) = x
+
+let main : int = id<int> (37)
+OUTPUT: 
+Line 2, characters 21-22: Error (typechecking)
+  Type error:
+Expected:
+  `a
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  17-polymorphic-binary-function.hopix
+
+INPUT: 
+fun : [`a `b] `a * `b -> `a
+      fst ((x : `b), (y : `a)) = x
+
+let main : int =
+    fst<int, char> (37, 'a')
+OUTPUT: 
+Line 2, characters 33-34: Error (typechecking)
+  Type error:
+Expected:
+  `a
+Given:
+  `b
+
+--------------------------------------------------------
+[XFAIL]  18-polymorphic-recursive-function.hopix
+
+INPUT: 
+fun : [`a `b] `a -> `b
+    false_rec (x : `a) = false_rec<`a, `a> (x)
+
+let main : string =
+    false_rec<int, string>(33)
+OUTPUT: 
+Line 5, characters 26-30: Error (typechecking)
+  Type error:
+Expected:
+  `a
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  19-polymorphic-mutually-recursive-functions.hopix
+
+INPUT: 
+fun : [`a `b] `a -> `b
+    false_rec (x : `a) = false_rec2<`b, `a> (x)
+
+and : [`a `b] `b -> `b
+    false_rec2 (x : `b) = false_rec<`b, `a> (x)
+
+let main : string = false_rec<int, string> (43)
+
+OUTPUT: 
+Line 2, characters 44-47: Error (typechecking)
+  Type error:
+Expected:
+  `d
+Given:
+  `a
+
+--------------------------------------------------------
+[XFAIL]  20-polymorphic-binary-function.hopix
+
+INPUT: 
+fun : [`a `b] (`a -> `b) * `a -> `b
+    apply ((f : `a -> `b), (x : `a)) = f (x)
+
+fun : [`a `b `c] (`a -> `b -> `c) -> (`a * `b -> `c)
+    curry (f : `a -> `b -> `c) =
+    fun : `a * `b -> `c
+        fc ((x :`a), (y : `b)) = (f (x)) (y);
+    fc
+
+fun : [`a `b `c] (`a * `b -> `c) -> (`b -> `a -> `c)
+    uncurry  (f : `a * `b -> `c) =
+    fun : `a -> `b -> `c
+      fu (x : `a) =
+      (fun : `b -> `c
+       g (y : `b) = f (x, y);
+      g);
+    fu
+
+fun : int -> int
+   id_int (x : int) = x
+
+let main : int =
+   (curry<int -> int, int, int> (uncurry<int -> int, int, int> (apply<int, int>))) (id_int, 37)
+OUTPUT: 
+Line 12, characters 4-113: Error (typechecking)
+  Type error:
+Expected:
+  `b -> (`a -> `c)
+Given:
+  `a -> (`b -> `c)
+
+--------------------------------------------------------
+[XFAIL]  21-record-01.hopix
+
+INPUT: 
+type p = { x : int, y : int }
+
+let x : p = { x = 0, y = "foo" }<>
+OUTPUT: 
+Line 3, characters 29-30: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  string
+
+--------------------------------------------------------
+[XFAIL]  22-polymorphic-record.hopix
+
+INPUT: 
+type p <`a> = { x : `a, y : string }
+
+let x : p <int> = { x = 0, y = 1 }<int>
+OUTPUT: 
+Line 3, characters 31-32: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  23-polymorphic-record-02.hopix
+
+INPUT: 
+type p <`a, `b> = { x : string, y : `b }
+
+let x : p <int, string> = { x = 0, y = "River Song" }<int, string>
+OUTPUT: 
+Line 3, characters 32-33: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  24-record-proj.hopix
+
+INPUT: 
+type p = { x : int, y : string }
+
+let p : p = { x = 42, y = "Dalek" }<>
+
+let px : string = p.x
+
+let py : string = p.y
+OUTPUT: 
+Line 5, characters 18-21: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  25-polymorphic-record-proj.hopix
+
+INPUT: 
+type p<`a, `b> = { x : `a, y : `b }
+
+let p : p<int, string> = { x = 0, y = "Rose Tyler" }<int, string>
+
+let x : int = p.x
+
+let y : string = p.z
+OUTPUT: 
+Fatal error: exception HopixTypes.NotAMonotype
+--------------------------------------------------------
+[XFAIL]  26-function-over-polymorphic-record.hopix
+
+INPUT: 
+type p<`a, `b> = { x : `a, y : `b }
+
+fun : [`a `b] p<`a, `b> -> `a
+    get_x (p : p<`a, `b>) = p.x
+
+fun : [`a `b] p<`a, `b> -> `b
+   get_y (p : p<`a, `b>) = p.x
+
+let p : p<int, string> = { x = 37, y = "Rory Williams" }<int, string>
+
+let x : int = get_x<int, string>(p)
+
+let y : string = get_y<int, string>(p)
+OUTPUT: 
+Fatal error: exception HopixTypes.NotAMonotype
+--------------------------------------------------------
+[XFAIL]  27-function-in-record.hopix
+
+INPUT: 
+type f<`a, `b> = { apply : `a -> `b }
+
+fun : int -> int
+    f (x : int) = x + 1
+
+let boxed_f : f<int, int> = { apply = f }<int, int>
+
+fun : [`a `b] f<`a, `b> * `a -> `b
+    apply_boxed_f ((boxed_f : f<`a, `b>), (a : `a)) = boxed_f.apply (a)
+
+let main : int = apply_boxed_f<int>(boxed_f, 42)
+OUTPUT: 
+Line 6, characters 38-39: Error (typechecking)
+  Type error:
+Expected:
+  `a -> `b
+Given:
+  int -> int
+
+--------------------------------------------------------
+[XFAIL]  28-anonymous-function.hopix
+
+INPUT: 
+let succ : int -> int = (\ (x : int) -> "bar" : int -> int)
+
+let main : int = succ (0)
+OUTPUT: 
+Line 1, characters 25-45: Error (typechecking)
+  Type error:
+Expected:
+  int -> string
+Given:
+  int -> int
+
+--------------------------------------------------------
+[XFAIL]  29-anonymous-nary-functions.hopix
+
+INPUT: 
+fun : (int -> int) -> int -> int
+    apply (f : int -> int) =
+    (\(x : int) -> f (x) : int -> int)
+
+fun : int -> int
+    succ (x : int) = x + 1
+
+fun : (int -> int -> int) -> int -> int -> int
+    apply2 (f : int -> int -> int) =
+    (\(x : int) ->
+     (\(y : int) -> f x y : int -> int) : int -> int -> int)
+
+fun : int -> int -> int
+     addmul (x : int) = (\(y : int) -> x * y + y * x : int -> int)
+
+fun : (int -> int -> int -> int) -> int -> int -> int -> int
+    apply3 (f : int -> int -> int -> int) =
+    (\(x : int) ->
+      (\(y : int) ->
+        (\(z : int) -> f x y z : int -> int)
+      : int -> int)
+    : int -> int -> int -> int)
+
+let conj : int -> int -> int -> int =
+    (\(x : int) ->
+       (\(y : int) ->
+         (\(z : int) -> x * y * z : int -> int)
+       : int -> int -> int)
+    : int -> int -> int -> int)
+
+let main : int =
+    apply succ (-1) +
+    apply2 addmul 3 7 +
+    apply3 conj 0 1 2
+
+
+
+
+OUTPUT: 
+Line 19, characters 7-65: Error (typechecking)
+  Type error:
+Expected:
+  int -> (int -> int)
+Given:
+  int -> int
+
+--------------------------------------------------------
+[XFAIL]  30-anonymous-third-order.hopix
+
+INPUT: 
+fun : [`a `b] ((`a -> `b) -> (`a -> `b)) -> `a -> `b -> `b
+    fix0 (f : (`a -> `b) -> (`a -> `b)) =
+    (\(a : `b) ->
+      (\(b : `a) -> f (\(x : `a) -> b : `a -> `b) a : `b -> `b)
+    : `a -> `b -> `b)
+OUTPUT: 
+Line 4, characters 23-37: Error (typechecking)
+  Type error:
+Expected:
+  `a -> `a
+Given:
+  `a -> `b
+
+--------------------------------------------------------
+[XFAIL]  31-constructor.hopix
+
+INPUT: 
+type color = Red | Blue
+
+let red   : color = Red<>
+let blue  : color = Blue<>
+let green : color = Green<>
+OUTPUT: 
+Line 5, characters 20-25: Error (typechecking)
+  Unbound tagged type `Green`
+--------------------------------------------------------
+[XFAIL]  32-constructor-with-data.hopix
+
+INPUT: 
+type option = Some (string) | None
+
+let none : option = None<>
+
+let some42 : option = Some<> (42)
+OUTPUT: 
+Line 5, characters 30-32: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  33-constructor-with-multiple-data.hopix
+
+INPUT: 
+type ipair = Pair (int, int)
+
+let a_pair_of_int : ipair = Pair<>(0, "yo")
+OUTPUT: 
+Line 3, characters 41-42: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  string
+
+--------------------------------------------------------
+[ KO ]   -->  34-recursive-datatype.hopix  should have failed !
+
+INPUT: 
+type l = N | C (l, int)
+
+let a_list : l = C<> (1, C<> (2, C<> (3, N<>)))
+OUTPUT: 
+a_list : l
+--------------------------------------------------------
+[XFAIL]  35-recursive-datatype-02.hopix
+
+INPUT: 
+type t = N | P (t, t, t)
+
+let leaf : t = N<>
+
+let a_tree : t =
+  P<> (P<> (P<> (leaf, leaf), P<>(leaf, P<>(leaf, leaf))), leaf)
+OUTPUT: 
+Fatal error: exception "Assert_failure src/hopix/hopixTypechecker.ml:297:13"
+--------------------------------------------------------
+[XFAIL]  36-recurse-datatype-embedding-functions.hopix
+
+INPUT: 
+type s = C (int)
+
+fun : int -> s
+      from (n : int) = C<> (n, (\(u : unit) -> from (n + 1) : unit -> s))
+OUTPUT: 
+Fatal error: exception "Assert_failure src/hopix/hopixTypechecker.ml:297:13"
+--------------------------------------------------------
+[XFAIL]  37-pattern-matching-01.hopix
+
+INPUT: 
+type t = T
+
+let t : t = switch (T<>) { U<> -> T<> }
+
+OUTPUT: 
+Line 3, characters 27-30: Error (typechecking)
+  A type annotation is missing.
+--------------------------------------------------------
+[XFAIL]  38-pattern-matching-02.hopix
+
+INPUT: 
+type t = T
+
+let t : t = switch (T<>) { (x : int) -> x }
+
+OUTPUT: 
+Line 3, characters 12-43: Error (typechecking)
+  Error: pattern int does not match expression t
+
+--------------------------------------------------------
+[XFAIL]  39-pattern-matching-03.hopix
+
+INPUT: 
+type c = A
+
+let main : int = switch (A<>) { A<> -> 0 | B<> -> 1 }
+OUTPUT: 
+Line 3, characters 32-35: Error (typechecking)
+  A type annotation is missing.
+--------------------------------------------------------
+[XFAIL]  40-pattern-matching-04.hopix
+
+INPUT: 
+type option = None | Some (int)
+
+let x : int = switch (Some<>(42)) { Some<>((x : string)) -> x | None<> -> 0 }
+OUTPUT: 
+Line 3, characters 36-56: Error (typechecking)
+  A type annotation is missing.
+--------------------------------------------------------
+[XFAIL]  41-pattern-matching-05.hopix
+
+INPUT: 
+type option<`a> = None | Some (string)
+
+let x : int = switch (Some<int>(42)) { Some<int>((x : int)) -> x | None<int> -> 0 }
+OUTPUT: 
+Line 3, characters 32-34: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  42-pattern-matching-06.hopix
+
+INPUT: 
+type option<`a> = None | Some (`a)
+
+let x : int = switch (Some<int>(42)) { Some<int>((_ : int)) | None<string> -> 0 }
+OUTPUT: 
+Line 3, characters 14-81: Error (typechecking)
+  option<string> not compatible of option<int>
+--------------------------------------------------------
+[XFAIL]  43-pattern-matching-07.hopix
+
+INPUT: 
+type or<`a, `b> = Left(`a) | Right(`b)
+
+let x : int = switch (Left<int, int>(22)) {
+  Left<int, string>((x : int)) | Right<int, int>((x : int)) -> x
+}
+OUTPUT: 
+Line 3, characters 14-110: Error (typechecking)
+  or<int, int> not compatible of or<int, string>
+--------------------------------------------------------
+[ KO ]   -->  44-pattern-matching-08.hopix  should have failed !
+
+INPUT: 
+type p<`a, `b> = P(`a, `b)
+
+let x : int = switch (P <int, int> (22, 33)) {
+  P<int, int>((x : int), (x : int)) -> x + x
+}
+OUTPUT: 
+x : int
+--------------------------------------------------------
+[XFAIL]  45-pattern-matching-09.hopix
+
+INPUT: 
+type p<`a, `b> = P(`a)
+
+let x : int = switch (P<p<int, int>, int>(P<int, int>(22, 44), 33)) {
+  P<p<int, int>, int>(P<int, int>((x : int), (y : int)), (_ : int)) -> x + y
+}
+OUTPUT: 
+Fatal error: exception "Assert_failure src/hopix/hopixTypechecker.ml:297:13"
+--------------------------------------------------------
+[ KO ]   -->  46-pattern-matching-10.hopix  should have failed !
+
+INPUT: 
+type p<`a, `b> = P(`a, `b)
+
+let x : int = switch (P<int, int>(22, 33)) {
+  P<int, int>((x : int), (_ : int)) & P<int, int>((_ : int), (x : int)) -> x + x
+}
+OUTPUT: 
+x : int
+--------------------------------------------------------
+[XFAIL]  47-pattern-matching-11.hopix
+
+INPUT: 
+type p<`a, `b> = P(`a, `b)
+type l = { l : int }
+
+let x : int = switch (P<l, int>({ l = 22 }<>, 33)) {
+  P<l, int>( { u = (x : int) }<>, (y : int)) -> x + y
+}
+OUTPUT: 
+Line 5, characters 13-32: Error (typechecking)
+  A type annotation is missing.
+--------------------------------------------------------
+[XFAIL]  48-pattern-matching-12.hopix
+
+INPUT: 
+let x : int = switch ("bar") { 0 -> 1 | (_ : int) -> 0 }
+OUTPUT: 
+Line 1, characters 14-56: Error (typechecking)
+  Error: pattern int does not match expression string
+
+--------------------------------------------------------
+[XFAIL]  49-pattern-matching-13.hopix
+
+INPUT: 
+let x : int = switch ("Doctor") { "Doctor" -> 1 | (_ : int) -> 0 }
+OUTPUT: 
+Line 1, characters 14-66: Error (typechecking)
+  Error: pattern int does not match expression string
+
+--------------------------------------------------------
+[XFAIL]  50-pattern-matching-14.hopix
+
+INPUT: 
+let x : int = switch ('x') { 0 -> 1 | (_ : char) -> 0 }
+OUTPUT: 
+Line 1, characters 14-55: Error (typechecking)
+  Error: pattern int does not match expression char
+
+--------------------------------------------------------
+[XFAIL]  51-ref.hopix
+
+INPUT: 
+let x : int = ref (0)
+OUTPUT: 
+Line 1, characters 14-21: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  mut<int>
+
+--------------------------------------------------------
+[XFAIL]  52-assign.hopix
+
+INPUT: 
+et x : mut<int> = 0
+
+let main : unit =
+    x := 1
+OUTPUT: 
+Global Error (during parsing)
+  Syntax error.
+--------------------------------------------------------
+[XFAIL]  53-read.hopix
+
+INPUT: 
+let x : mut<int> = ref (0)
+
+let main : string =
+    !x
+OUTPUT: 
+Line 4, characters 4-6: Error (typechecking)
+  Type error:
+Expected:
+  string
+Given:
+  int
+
+--------------------------------------------------------
+[XFAIL]  54-sequence.hopix
+
+INPUT: 
+let x : mut<int> = ref (0)
+
+let main : int =
+    x := "bar";
+    !x
+OUTPUT: 
+Line 4, characters 4-5: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  string
+
+--------------------------------------------------------
+[XFAIL]  55-while.hopix
+
+INPUT: 
+let x : mut<int> = ref ("foo")
+
+let main : int =
+    while (!x >? 0) {
+      x := !x - 1
+    };
+    !x
+OUTPUT: 
+Line 1, characters 19-30: Error (typechecking)
+  Type error:
+Expected:
+  mut<int>
+Given:
+  mut<string>
+
+--------------------------------------------------------
+[XFAIL]  56-for.hopix
+
+INPUT: 
+let x : mut<string> = ref (4)
+
+let main : int =
+    for i in (0 to 30) {
+      x := !x + 1
+    };
+    !x
+OUTPUT: 
+Line 1, characters 22-29: Error (typechecking)
+  Type error:
+Expected:
+  mut<string>
+Given:
+  mut<int>
+
+--------------------------------------------------------
+./01-int-literal.hopix ./02-arith-01.hopix ./03-arith-02.hopix ./04-arith-03.hopix ./06-arith-04.hopix ./07-arith-05.hopix ./08-char-literal.hopix ./09-char-string.hopix ./10-local-definition.hopix ./11-function-definition.hopix ./12-rec-function-definition.hopix ./13-mutually-rec-fun-definitions.hopix ./14-binary-function.hopix ./14-binary-rec-function.hopix ./15-binary-mutually-rec-function.hopix ./16-polymorphic-function.hopix ./17-polymorphic-binary-function.hopix ./18-polymorphic-recursive-function.hopix ./19-polymorphic-mutually-recursive-functions.hopix ./20-polymorphic-binary-function.hopix ./21-record-01.hopix ./22-polymorphic-record.hopix ./23-polymorphic-record-02.hopix ./24-record-proj.hopix ./25-polymorphic-record-proj.hopix ./26-function-over-polymorphic-record.hopix ./27-function-in-record.hopix ./28-anonymous-function.hopix ./29-anonymous-nary-functions.hopix ./30-anonymous-third-order.hopix ./31-constructor.hopix ./32-constructor-with-data.hopix ./33-constructor-with-multiple-data.hopix ./34-recursive-datatype.hopix ./35-recursive-datatype-02.hopix ./36-recurse-datatype-embedding-functions.hopix ./37-pattern-matching-01.hopix ./38-pattern-matching-02.hopix ./39-pattern-matching-03.hopix ./40-pattern-matching-04.hopix ./41-pattern-matching-05.hopix ./42-pattern-matching-06.hopix ./43-pattern-matching-07.hopix ./44-pattern-matching-08.hopix ./45-pattern-matching-09.hopix ./46-pattern-matching-10.hopix ./47-pattern-matching-11.hopix ./48-pattern-matching-12.hopix ./49-pattern-matching-13.hopix ./50-pattern-matching-14.hopix ./51-ref.hopix ./52-assign.hopix ./53-read.hopix ./54-sequence.hopix ./55-while.hopix ./56-for.hopix
+BAD: 53/56
+SCORE: 94%
+make[1]: Leaving directory '/home/opam/source/flap/tests/m3/hopix/typechecker/bad'
+make[1]: Entering directory '/home/opam/source/flap/tests/m3/hopix/typechecker/good'
+========================================================
+In typechecker/good
+[ OK ]   01-int-literal.hopix
+
+INPUT:
+let x : int = 42
+let y : int = -42
+OUTPUT: 
+x : int
+y : int
+EXPECTED: 
+x : int
+y : int
+--------------------------------------------------------
+[ OK ]   02-arith-01.hopix
+
+INPUT:
+let x : int = 1 + 1
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   03-arith-02.hopix
+
+INPUT:
+let x : int = 1 * 2
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   04-arith-03.hopix
+
+INPUT:
+let x : int = 1 - 2
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   06-arith-04.hopix
+
+INPUT:
+let x : int = 1 / 2
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   07-arith-05.hopix
+
+INPUT:
+let x : int = 1 / 2 + 3 * 5 - 6
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   08-char-literal.hopix
+
+INPUT:
+let c : char = 'a'
+OUTPUT: 
+c : char
+EXPECTED: 
+c : char
+--------------------------------------------------------
+[ OK ]   09-char-string.hopix
+
+INPUT:
+let c : string = "Luke, I may be your father!"
+OUTPUT: 
+c : string
+EXPECTED: 
+c : string
+--------------------------------------------------------
+[ OK ]   10-local-definition.hopix
+
+INPUT:
+let main : int =
+    let x : int = 1;
+    x
+OUTPUT: 
+main : int
+EXPECTED: 
+main : int
+--------------------------------------------------------
+[ OK ]   11-function-definition.hopix
+
+INPUT:
+fun : int -> int
+    id (x : int) = x
+
+let main : int =
+    id (42)
+OUTPUT: 
+id : int -> int
+main : int
+EXPECTED: 
+id : int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   12-rec-function-definition.hopix
+
+INPUT:
+fun : int -> int
+   id (x : int) = id x
+
+let main : int =
+    id 42
+OUTPUT: 
+id : int -> int
+main : int
+EXPECTED: 
+id : int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   13-mutually-rec-fun-definitions.hopix
+
+INPUT:
+fun : int -> int
+    double_omega (x : int) =
+    omega (x)
+and : int -> int
+    omega (x: int) =
+    double_omega (x)
+
+let main : int = double_omega 73
+OUTPUT: 
+double_omega : int -> int
+omega : int -> int
+main : int
+EXPECTED: 
+double_omega : int -> int
+omega : int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   14-binary-function.hopix
+
+INPUT:
+fun : int * int -> int
+      fst ((x : int), (y : int)) = x
+
+let main : int = fst (3, 4)
+OUTPUT: 
+fst : int * int -> int
+main : int
+EXPECTED: 
+fst : int * int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   14-binary-rec-function.hopix
+
+INPUT:
+fun : int * int -> int
+      fst ((x : int), (y : int)) = fst (y, x)
+
+let main : int = fst (3, 4)
+OUTPUT: 
+fst : int * int -> int
+main : int
+EXPECTED: 
+fst : int * int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   15-binary-mutually-rec-function.hopix
+
+INPUT:
+fun : int * int -> int
+    fst ((x : int), (y : int)) = snd (y, x)
+
+and : int * int -> int
+    snd ((x : int), (y : int)) = fst (x, y)
+
+let main : int = fst (3, 4)
+OUTPUT: 
+fst : int * int -> int
+snd : int * int -> int
+main : int
+EXPECTED: 
+fst : int * int -> int
+snd : int * int -> int
+main : int
+--------------------------------------------------------
+[ KO ]   -->  16-polymorphic-function.hopix
+
+INPUT:
+fun : [`a] `a -> `a
+      id (x : `a) = x
+
+let main : int = id<int> (37)
+OUTPUT: 
+Line 4, characters 25-29: Error (typechecking)
+  Type error:
+Expected:
+  `a
+Given:
+  int
+
+EXPECTED: 
+id : [ `a] `a -> `a
+main : int
+--------------------------------------------------------
+[ KO ]   -->  17-polymorphic-binary-function.hopix
+
+INPUT:
+fun : [`a `b] `a * `b -> `a
+      fst ((x : `a), (y : `b)) = x
+
+let main : int =
+    fst<int, char> (37, 'a')
+OUTPUT: 
+Line 5, characters 19-28: Error (typechecking)
+  Type error:
+Expected:
+  `a * `b
+Given:
+  int * char
+
+EXPECTED: 
+fst : [ `a `b] `a * `b -> `a
+main : int
+--------------------------------------------------------
+[ KO ]   -->  18-polymorphic-recursive-function.hopix
+
+INPUT:
+fun : [`a `b] `a -> `b
+    false_rec (x : `a) = false_rec<`a, `b> (x)
+
+let main : string =
+    false_rec<int, string>(33)
+OUTPUT: 
+Line 5, characters 26-30: Error (typechecking)
+  Type error:
+Expected:
+  `a
+Given:
+  int
+
+EXPECTED: 
+false_rec : [ `a `b] `a -> `b
+main : string
+--------------------------------------------------------
+[ KO ]   -->  19-polymorphic-mutually-recursive-functions.hopix
+
+INPUT:
+fun : [`a `b] `a -> `b
+    false_rec (x : `a) = false_rec2<`b, `a> (x)
+
+and : [`a `b] `b -> `a
+    false_rec2 (x : `b) = false_rec<`b, `a> (x)
+
+let main : string = false_rec<int, string> (43)
+
+OUTPUT: 
+Line 2, characters 44-47: Error (typechecking)
+  Type error:
+Expected:
+  `d
+Given:
+  `a
+
+EXPECTED: 
+false_rec : [ `a `b] `a -> `b
+false_rec2 : [ `b `a] `a -> `b
+main : string
+--------------------------------------------------------
+[ KO ]   -->  20-polymorphic-binary-function.hopix
+
+INPUT:
+fun : [`a `b] (`a -> `b) * `a -> `b
+    apply ((f : `a -> `b), (x : `a)) = f (x)
+
+fun : [`a `b `c] (`a -> `b -> `c) -> (`a * `b -> `c)
+    curry (f : `a -> `b -> `c) =
+    fun : `a * `b -> `c
+        fc ((x :`a), (y : `b)) = (f (x)) (y);
+    fc
+
+fun : [`a `b `c] (`a * `b -> `c) -> (`a -> `b -> `c)
+    uncurry  (f : `a * `b -> `c) =
+    fun : `a -> `b -> `c
+      fu (x : `a) =
+      (fun : `b -> `c
+       g (y : `b) = f (x, y);
+      g);
+    fu
+
+fun : int -> int
+   id_int (x : int) = x
+
+let main : int =
+   (curry<int -> int, int, int> (uncurry<int -> int, int, int> (apply<int, int>))) (id_int, 37)
+OUTPUT: 
+Line 23, characters 63-80: Error (typechecking)
+  Type error:
+Expected:
+  `f * `g -> `h
+Given:
+  (`a -> `b) * `a -> `b
+
+EXPECTED: 
+apply : [ `a `b] (`a -> `b) * `a -> `b
+curry : [ `a `b `c] (`a -> (`b -> `c)) -> (`a * `b -> `c)
+uncurry : [ `a `b `c] (`a * `b -> `c) -> (`a -> (`b -> `c))
+id_int : int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   21-record-01.hopix
+
+INPUT:
+type p = { x : int, y : int }
+
+let x : p = { x = 0, y = 1 }<>
+OUTPUT: 
+x : p
+EXPECTED: 
+x : p
+--------------------------------------------------------
+[ OK ]   22-polymorphic-record.hopix
+
+INPUT:
+type p <`a> = { x : `a, y : `a }
+
+let x : p <int> = { x = 0, y = 1 }<int>
+OUTPUT: 
+x : p<int>
+EXPECTED: 
+x : p<int>
+--------------------------------------------------------
+[ OK ]   23-polymorphic-record-02.hopix
+
+INPUT:
+type p <`a, `b> = { x : `a, y : `b }
+
+let x : p <int, string> = { x = 0, y = "River Song" }<int, string>
+OUTPUT: 
+x : p<int, string>
+EXPECTED: 
+x : p<int, string>
+--------------------------------------------------------
+[ OK ]   24-record-proj.hopix
+
+INPUT:
+type p = { x : int, y : string }
+
+let p : p = { x = 42, y = "Dalek" }<>
+
+let px : int = p.x
+
+let py : string = p.y
+OUTPUT: 
+p : p
+px : int
+py : string
+EXPECTED: 
+p : p
+px : int
+py : string
+--------------------------------------------------------
+[ KO ]   -->  25-polymorphic-record-proj.hopix
+
+INPUT:
+type p<`a, `b> = { x : `a, y : `b }
+
+let p : p<int, string> = { x = 0, y = "Rose Tyler" }<int, string>
+
+let x : int = p.x
+
+let y : string = p.y
+OUTPUT: 
+Fatal error: exception HopixTypes.NotAMonotype
+EXPECTED: 
+p : p<int, string>
+x : int
+y : string
+--------------------------------------------------------
+[ KO ]   -->  26-function-over-polymorphic-record.hopix
+
+INPUT:
+type p<`a, `b> = { x : `a, y : `b }
+
+fun : [`a `b] p<`a, `b> -> `a
+    get_x (p : p<`a, `b>) = p.x
+
+fun : [`a `b] p<`a, `b> -> `b
+   get_y (p : p<`a, `b>) = p.y
+
+let p : p<int, string> = { x = 37, y = "Rory Williams" }<int, string>
+
+let x : int = get_x<int, string>(p)
+
+let y : string = get_y<int, string>(p)
+OUTPUT: 
+Fatal error: exception HopixTypes.NotAMonotype
+EXPECTED: 
+get_x : [ `a `b] p<`a, `b> -> `a
+get_y : [ `a `b] p<`a, `b> -> `b
+p : p<int, string>
+x : int
+y : string
+--------------------------------------------------------
+[ KO ]   -->  27-function-in-record.hopix
+
+INPUT:
+type f<`a, `b> = { apply : `a -> `b }
+
+fun : int -> int
+    f (x : int) = x + 1
+
+let boxed_f : f<int, int> = { apply = f }<int, int>
+
+fun : [`a `b] f<`a, `b> * `a -> `b
+    apply_boxed_f ((boxed_f : f<`a, `b>), (a : `a)) = boxed_f.apply (a)
+
+let main : int = apply_boxed_f<int, int>(boxed_f, 42)
+OUTPUT: 
+Line 6, characters 38-39: Error (typechecking)
+  Type error:
+Expected:
+  `a -> `b
+Given:
+  int -> int
+
+EXPECTED: 
+f : int -> int
+boxed_f : f<int, int>
+apply_boxed_f : [ `a `b] f<`a, `b> * `a -> `b
+main : int
+--------------------------------------------------------
+[ OK ]   28-anonymous-function.hopix
+
+INPUT:
+let succ : int -> int = (\ (x : int) -> x + 1 : int -> int)
+
+let main : int = succ (0)
+OUTPUT: 
+succ : int -> int
+main : int
+EXPECTED: 
+succ : int -> int
+main : int
+--------------------------------------------------------
+[ OK ]   29-anonymous-nary-functions.hopix
+
+INPUT:
+fun : (int -> int) -> int -> int
+    apply (f : int -> int) =
+    (\(x : int) -> f (x) : int -> int)
+
+fun : int -> int
+    succ (x : int) = x + 1
+
+fun : (int -> int -> int) -> int -> int -> int
+    apply2 (f : int -> int -> int) =
+    (\(x : int) ->
+     (\(y : int) -> f x y : int -> int) : int -> int -> int)
+
+fun : int -> int -> int
+     addmul (x : int) = (\(y : int) -> x * y + y * x : int -> int)
+
+fun : (int -> int -> int -> int) -> int -> int -> int -> int
+    apply3 (f : int -> int -> int -> int) =
+    (\(x : int) ->
+      (\(y : int) ->
+        (\(z : int) -> f x y z : int -> int)
+      : int -> int -> int)
+    : int -> int -> int -> int)
+
+let conj : int -> int -> int -> int =
+    (\(x : int) ->
+       (\(y : int) ->
+         (\(z : int) -> x * y * z : int -> int)
+       : int -> int -> int)
+    : int -> int -> int -> int)
+
+let main : int =
+    apply succ (-1) +
+    apply2 addmul 3 7 +
+    apply3 conj 0 1 2
+
+
+
+
+OUTPUT: 
+apply : (int -> int) -> (int -> int)
+succ : int -> int
+apply2 : (int -> (int -> int)) -> (int -> (int -> int))
+addmul : int -> (int -> int)
+apply3 : (int -> (int -> (int -> int))) -> (int -> (int -> (int -> int)))
+conj : int -> (int -> (int -> int))
+main : int
+EXPECTED: 
+apply : (int -> int) -> (int -> int)
+succ : int -> int
+apply2 : (int -> (int -> int)) -> (int -> (int -> int))
+addmul : int -> (int -> int)
+apply3 : (int -> (int -> (int -> int))) -> (int -> (int -> (int -> int)))
+conj : int -> (int -> (int -> int))
+main : int
+--------------------------------------------------------
+[ OK ]   30-anonymous-third-order.hopix
+
+INPUT:
+fun : [`a `b] ((`a -> `b) -> (`a -> `b)) -> `a -> `b -> `b
+    fix0 (f : (`a -> `b) -> (`a -> `b)) =
+    (\(a : `a) ->
+      (\(b : `b) -> f (\(x : `a) -> b : `a -> `b) a : `b -> `b)
+    : `a -> `b -> `b)
+OUTPUT: 
+fix0 : [ `a `b] ((`a -> `b) -> (`a -> `b)) -> (`a -> (`b -> `b))
+EXPECTED: 
+fix0 : [ `a `b] ((`a -> `b) -> (`a -> `b)) -> (`a -> (`b -> `b))
+--------------------------------------------------------
+[ OK ]   31-constructor.hopix
+
+INPUT:
+type color = Red | Blue | Green
+
+let red   : color = Red<>
+let blue  : color = Blue<>
+let green : color = Green<>
+OUTPUT: 
+red : color
+blue : color
+green : color
+EXPECTED: 
+red : color
+blue : color
+green : color
+--------------------------------------------------------
+[ OK ]   32-constructor-with-data.hopix
+
+INPUT:
+type option = Some (int) | None
+
+let none : option = None<>
+
+let some42 : option = Some<> (42)
+OUTPUT: 
+none : option
+some42 : option
+EXPECTED: 
+none : option
+some42 : option
+--------------------------------------------------------
+[ OK ]   33-constructor-with-multiple-data.hopix
+
+INPUT:
+type ipair = Pair (int, int)
+
+let a_pair_of_int : ipair = Pair<>(0, 1)
+OUTPUT: 
+a_pair_of_int : ipair
+EXPECTED: 
+a_pair_of_int : ipair
+--------------------------------------------------------
+[ KO ]   -->  34-recursive-datatype.hopix
+
+INPUT:
+type l = N | C (int, l)
+
+let a_list : l = C<> (1, C<> (2, C<> (3, N<>)))
+OUTPUT: 
+Line 3, characters 22-23: Error (typechecking)
+  Type error:
+Expected:
+  l
+Given:
+  int
+
+EXPECTED: 
+a_list : l
+--------------------------------------------------------
+[ OK ]   35-recursive-datatype-02.hopix
+
+INPUT:
+type t = N | P (t, t)
+
+let leaf : t = N<>
+
+let a_tree : t =
+  P<> (P<> (P<> (leaf, leaf), P<>(leaf, P<>(leaf, leaf))), leaf)
+OUTPUT: 
+leaf : t
+a_tree : t
+EXPECTED: 
+leaf : t
+a_tree : t
+--------------------------------------------------------
+[ KO ]   -->  36-recurse-datatype-embedding-functions.hopix
+
+INPUT:
+type s = C (int, unit -> s)
+
+fun : int -> s
+      from (n : int) = C<> (n, (\(u : unit) -> from (n + 1) : unit -> s))
+OUTPUT: 
+Line 4, characters 28-29: Error (typechecking)
+  Type error:
+Expected:
+  unit -> s
+Given:
+  int
+
+EXPECTED: 
+from : int -> s
+--------------------------------------------------------
+[ KO ]   -->  37-pattern-matching-01.hopix
+
+INPUT:
+type t = T
+
+let t : t = switch (T<>) { T<> -> T<> }
+
+OUTPUT: 
+Line 3, characters 27-30: Error (typechecking)
+  A type annotation is missing.
+EXPECTED: 
+t : t
+--------------------------------------------------------
+[ OK ]   38-pattern-matching-02.hopix
+
+INPUT:
+type t = T
+
+let t : t = switch (T<>) { (x : t) -> x }
+
+OUTPUT: 
+t : t
+EXPECTED: 
+t : t
+--------------------------------------------------------
+[ KO ]   -->  39-pattern-matching-03.hopix
+
+INPUT:
+type c = A | B
+
+let main : int = switch (A<>) { A<> -> 0 | B<> -> 1 }
+OUTPUT: 
+Line 3, characters 32-35: Error (typechecking)
+  A type annotation is missing.
+EXPECTED: 
+main : int
+--------------------------------------------------------
+[ KO ]   -->  40-pattern-matching-04.hopix
+
+INPUT:
+type option = None | Some (int)
+
+let x : int = switch (Some<>(42)) { Some<>((x : int)) -> x | None<> -> 0 }
+OUTPUT: 
+Line 3, characters 36-53: Error (typechecking)
+  A type annotation is missing.
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   41-pattern-matching-05.hopix
+
+INPUT:
+type option<`a> = None | Some (`a)
+
+let x : int = switch (Some<int>(42)) { Some<int>((x : int)) -> x | None<int> -> 0 }
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   42-pattern-matching-06.hopix
+
+INPUT:
+type option<`a> = None | Some (`a)
+
+let x : int = switch (Some<int>(42)) { Some<int>((_ : int)) | None<int> -> 0 }
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   43-pattern-matching-07.hopix
+
+INPUT:
+type or<`a, `b> = Left(`a) | Right(`b)
+
+let x : int = switch (Left<int, int>(22)) {
+  Left<int, int>((x : int)) | Right<int, int>((x : int)) -> x
+}
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   44-pattern-matching-08.hopix
+
+INPUT:
+type p<`a, `b> = P(`a, `b)
+
+let x : int = switch (P <int, int> (22, 33)) {
+  P<int, int>((x : int), (y : int)) -> x + y
+}
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ KO ]   -->  45-pattern-matching-09.hopix
+
+INPUT:
+type p<`a, `b> = P(`a, `b)
+
+let x : int = switch (P<p<int, int>, int>(P<int, int>(22, 44), 33)) {
+  P<p<int, int>, int>(P<int, int>((x : int), (y : int)), (_ : int)) -> x + y
+}
+OUTPUT: 
+Line 3, characters 42-61: Error (typechecking)
+  Type error:
+Expected:
+  int
+Given:
+  p<int, int>
+
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   46-pattern-matching-10.hopix
+
+INPUT:
+type p<`a, `b> = P(`a, `b)
+
+let x : int = switch (P<int, int>(22, 33)) {
+  P<int, int>((x : int), (_ : int)) & P<int, int>((_ : int), (y : int)) -> x + y
+}
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ KO ]   -->  47-pattern-matching-11.hopix
+
+INPUT:
+type p<`a, `b> = P(`a, `b)
+type l = { l : int }
+
+let x : int = switch (P<l, int>({ l = 22 }<>, 33)) {
+  P<l, int>( { l = (x : int) }<>, (y : int)) -> x + y
+}
+OUTPUT: 
+Line 5, characters 13-32: Error (typechecking)
+  A type annotation is missing.
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   48-pattern-matching-12.hopix
+
+INPUT:
+let x : int = switch (3) { 0 -> 1 | (_ : int) -> 0 }
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   49-pattern-matching-13.hopix
+
+INPUT:
+let x : int = switch ("Doctor") { "Doctor" -> 1 | (_ : string) -> 0 }
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   50-pattern-matching-14.hopix
+
+INPUT:
+let x : int = switch ('x') { 'x' -> 1 | (_ : char) -> 0 }
+OUTPUT: 
+x : int
+EXPECTED: 
+x : int
+--------------------------------------------------------
+[ OK ]   51-ref.hopix
+
+INPUT:
+let x : mut<int> = ref (0)
+OUTPUT: 
+x : mut<int>
+EXPECTED: 
+x : mut<int>
+--------------------------------------------------------
+[ OK ]   52-assign.hopix
+
+INPUT:
+let x : mut<int> = ref (0)
+
+let main : unit =
+    x := 1
+OUTPUT: 
+x : mut<int>
+main : unit
+EXPECTED: 
+x : mut<int>
+main : unit
+--------------------------------------------------------
+[ OK ]   53-read.hopix
+
+INPUT:
+let x : mut<int> = ref (0)
+
+let main : int =
+    !x
+OUTPUT: 
+x : mut<int>
+main : int
+EXPECTED: 
+x : mut<int>
+main : int
+--------------------------------------------------------
+[ OK ]   54-sequence.hopix
+
+INPUT:
+let x : mut<int> = ref (0)
+
+let main : int =
+    x := 1;
+    !x
+OUTPUT: 
+x : mut<int>
+main : int
+EXPECTED: 
+x : mut<int>
+main : int
+--------------------------------------------------------
+[ OK ]   55-while.hopix
+
+INPUT:
+let x : mut<int> = ref (4)
+
+let main : int =
+    while (!x >? 0) {
+      x := !x - 1
+    };
+    !x
+OUTPUT: 
+x : mut<int>
+main : int
+EXPECTED: 
+x : mut<int>
+main : int
+--------------------------------------------------------
+[ OK ]   56-for.hopix
+
+INPUT:
+let x : mut<int> = ref (4)
+
+let main : int =
+    for i in (0 to 30) {
+      x := !x + 1
+    };
+    !x
+OUTPUT: 
+x : mut<int>
+main : int
+EXPECTED: 
+x : mut<int>
+main : int
+--------------------------------------------------------
+GOOD: 41/56
+SCORE: 73%
+
+BAD: 0/0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m3/hopix/typechecker/good'
+--------------------------------------------------------
+Global results:
+BAD:   53 / 56
+GOOD:  41 / 56
+SCORE: 83%
+--------------------------------------------------------
+make: Leaving directory '/home/opam/source/flap/tests/m3'

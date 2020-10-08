@@ -1,0 +1,817 @@
+make: Entering directory '/home/opam/source/flap/tests/m6'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6'
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-elf/good'
+========================================================
+In to-elf/good
+[ KO ]   -->  01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+120
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+1
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42424240
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+85
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+3610152136101521
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+18
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+4233
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+2042
+STDERR:
+
+
+
+STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+Command exited with non-zero status 2
+0:00.00
+--------------------------------------------------------
+GOOD: 0 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-elf/good'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-fopix/good'
+========================================================
+In to-fopix/good
+[ OK ]   01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+120EXPECTED: 
+120STDERR: 
+--------------------------------------------------------
+[ OK ]   02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+
+Unbound identifier f
+EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+1EXPECTED: 
+1STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+42
+Unbound identifier f
+EXPECTED: 
+42424240STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+85STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+
+Unbound identifier f
+EXPECTED: 
+3610152136101521STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+18STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+
+Unbound identifier print_int
+EXPECTED: 
+4233STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+
+Unbound identifier y
+EXPECTED: 
+2042STDERR: 
+--------------------------------------------------------
+GOOD: 4 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-fopix/good'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-retrolix/good'
+========================================================
+In to-retrolix/good
+[ KO ]   -->  01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+EXPECTED: 
+120STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+EXPECTED: 
+42STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+EXPECTED: 
+42STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+EXPECTED: 
+42STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+EXPECTED: 
+1STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+EXPECTED: 
+42424240STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+EXPECTED: 
+42STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+EXPECTED: 
+85STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+EXPECTED: 
+3610152136101521STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+EXPECTED: 
+18STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+EXPECTED: 
+4233STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+EXPECTED: 
+2042STDERR: 
+Fatal error: exception (Failure "Students! This is your job!")
+--------------------------------------------------------
+GOOD: 0 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-retrolix/good'
+--------------------------------------------------------
+Global results:
+BAD:   0 / 0
+GOOD:  4 / 36
+--------------------------------------------------------
+make: Leaving directory '/home/opam/source/flap/tests/m6'

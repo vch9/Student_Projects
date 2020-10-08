@@ -1,0 +1,28 @@
+<html><head>
+<link rel="stylesheet" href="style.css" type="text/css">
+<meta content="text/html; charset=utf8" http-equiv="Content-Type">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="Start" href="index.html">
+<link title="Index of types" rel=Appendix href="index_types.html">
+<link title="Index of values" rel=Appendix href="index_values.html">
+<link title="Index of modules" rel=Appendix href="index_modules.html">
+<link title="Marthe" rel="Chapter" href="Marthe.html"><title>Marthe.eval</title>
+</head>
+<body>
+<code class="code"><span class="keyword">let</span> <span class="keyword">rec</span> eval m env =
+  <span class="keyword">match</span> m <span class="keyword">with</span>
+  <span class="keywordsign">|</span> <span class="constructor">Id</span> x <span class="keywordsign">-&gt;</span>
+     <span class="constructor">M</span>.find x env
+  <span class="keywordsign">|</span> <span class="constructor">LInt</span> i <span class="keywordsign">-&gt;</span>
+     i
+  <span class="keywordsign">|</span> <span class="constructor">Add</span> (m, n) <span class="keywordsign">-&gt;</span>
+     eval m env + eval n env
+  <span class="keywordsign">|</span> <span class="constructor">Mul</span> (m, n) <span class="keywordsign">-&gt;</span>
+     eval m env * eval n env
+  <span class="keywordsign">|</span> <span class="constructor">Sum</span> (x, m, n, p) <span class="keywordsign">-&gt;</span>
+     <span class="keyword">let</span> lo = eval m env <span class="keyword">in</span>
+     <span class="keyword">let</span> hi = eval n env <span class="keyword">in</span>
+     <span class="keyword">let</span> <span class="keyword">rec</span> eval_on_range lo =
+       <span class="keyword">if</span> lo &lt;= hi <span class="keyword">then</span> eval p (<span class="constructor">M</span>.add x lo env) + eval_on_range (lo + 1) <span class="keyword">else</span> 0
+     <span class="keyword">in</span>
+     eval_on_range lo</code></body></html>

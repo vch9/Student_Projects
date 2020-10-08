@@ -1,0 +1,11 @@
+(ocamllex lexer)
+
+(menhir
+ (flags --explain --inspection --table --trace)
+ (modules parser))
+
+(executable
+ (name impo)
+ (ocamlopt_flags :standard)
+ (libraries menhirLib)
+)

@@ -1,0 +1,41 @@
+make: Entering directory '/home/opam/source/flap'
+---------------------
+Checking dependencies
+---------------------
+Looking for pprint...Found here /home/opam/.opam/4.05.0/lib/pprint
+Looking for sexplib...Found here /home/opam/.opam/4.05.0/lib/sexplib
+Looking for ppx_sexp_conv...Found here /home/opam/.opam/4.05.0/lib/ppx_sexp_conv
+Looking for ppx_deriving...Found here /home/opam/.opam/4.05.0/lib/ppx_deriving
+Looking for menhirLib...Found here /home/opam/.opam/4.05.0/lib/menhirLib
+rm -f flap.native
+---------------------
+Compiling flap.native
+---------------------
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/flap.ml > src/flap.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/commandLineOptions.ml > src/commandLineOptions.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/common/optimizers.ml > src/common/optimizers.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/common/compilers.mli > src/common/compilers.mli.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/common/languages.mli > src/common/languages.mli.depends
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/common -I src -I src/hopix -I src/utilities -o src/common/languages.cmi src/common/languages.mli
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/common -I src -I src/hopix -I src/utilities -o src/common/compilers.cmi src/common/compilers.mli
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/options.ml > src/options.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/utilities/error.mli > src/utilities/error.mli.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/utilities/position.mli > src/utilities/position.mli.depends
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/utilities -I src -I src/hopix -I src/common -o src/utilities/position.cmi src/utilities/position.mli
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/utilities/extStd.ml > src/utilities/extStd.ml.depends
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/utilities -I src -I src/hopix -I src/common -o src/utilities/error.cmi src/utilities/error.mli
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/utilities -I src -I src/hopix -I src/common -o src/utilities/extStd.cmo src/utilities/extStd.ml
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/version.ml > src/version.ml.depends
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/common -I src -I src/hopix -I src/utilities -o src/common/optimizers.cmo src/common/optimizers.ml
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src -I src/hopix -I src/utilities -I src/common -o src/options.cmo src/options.ml
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src -I src/hopix -I src/utilities -I src/common -o src/version.cmo src/version.ml
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/hopix/hopixInitialization.ml > src/hopix/hopixInitialization.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/hopix/hopix.ml > src/hopix/hopix.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/hopix/hopixAST.ml > src/hopix/hopixAST.ml.depends
+ocamlfind ocamldep -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -modules src/common/mint.mli > src/common/mint.mli.depends
+ocamlfind ocamlc -c -annot -bin-annot -thread -package pprint -package unix -package str -package sexplib -package ppx_sexp_conv -I src/common -I src -I src/hopix -I src/utilities -o src/common/mint.cmi src/common/mint.mli
+/home/opam/.opam/4.05.0/bin/ocamllex.opt -q src/hopix/hopixLexer.mll
++ /home/opam/.opam/4.05.0/bin/ocamllex.opt -q src/hopix/hopixLexer.mll
+File "src/hopix/hopixLexer.mll", line 41, character 37: character set expected.
+Command exited with code 3.
+make: Leaving directory '/home/opam/source/flap'

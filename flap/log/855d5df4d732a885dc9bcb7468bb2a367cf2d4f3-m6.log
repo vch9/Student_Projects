@@ -1,0 +1,874 @@
+make: Entering directory '/home/opam/source/flap/tests/m6'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6'
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-elf/good'
+========================================================
+In to-elf/good
+[ KO ]   -->  01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+Process exited with status exited(139).
+STDOUT:
+
+STDERR:
+Segmentation fault (core dumped)
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+120
+STDERR:
+
+
+
+STDERR: 
+0:00.12
+--------------------------------------------------------
+[ OK ]   02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+0:00.13
+--------------------------------------------------------
+[ OK ]   03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+0:00.11
+--------------------------------------------------------
+[ OK ]   04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+0:00.12
+--------------------------------------------------------
+[ KO ]   -->  05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+Process exited with status exited(139).
+STDOUT:
+
+STDERR:
+Segmentation fault (core dumped)
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+1
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+[ OK ]   06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+42424240
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42424240
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+[ OK ]   07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+42
+STDERR:
+
+
+
+STDERR: 
+0:00.14
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+Process exited with status exited(139).
+STDOUT:
+
+STDERR:
+Segmentation fault (core dumped)
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+85
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+[ OK ]   09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+3610152136101521
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+3610152136101521
+STDERR:
+
+
+
+STDERR: 
+0:00.17
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+Process exited with status exited(0).
+STDOUT:
+2064601939
+STDERR:
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+18
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+Process exited with status exited(139).
+STDOUT:
+
+STDERR:
+Segmentation fault (core dumped)
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+4233
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+Process exited with status exited(139).
+STDOUT:
+
+STDERR:
+Segmentation fault (core dumped)
+
+
+
+EXPECTED: 
+Process exited with status exited(0).
+STDOUT:
+2042
+STDERR:
+
+
+
+STDERR: 
+0:00.15
+--------------------------------------------------------
+GOOD: 6 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-elf/good'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-fopix/good'
+========================================================
+In to-fopix/good
+[ OK ]   01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+120EXPECTED: 
+120STDERR: 
+--------------------------------------------------------
+[ OK ]   02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+1EXPECTED: 
+1STDERR: 
+--------------------------------------------------------
+[ OK ]   06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+42424240EXPECTED: 
+42424240STDERR: 
+--------------------------------------------------------
+[ OK ]   07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+85STDERR: 
+--------------------------------------------------------
+[ OK ]   09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+3610152136101521EXPECTED: 
+3610152136101521STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+18STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+
+Unbound identifier print_int
+EXPECTED: 
+4233STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+
+Unbound identifier z
+EXPECTED: 
+2042STDERR: 
+--------------------------------------------------------
+GOOD: 8 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-fopix/good'
+make[1]: Entering directory '/home/opam/source/flap/tests/m6/hobix/to-retrolix/good'
+========================================================
+In to-retrolix/good
+[ KO ]   -->  01-fact.hobix
+
+INPUT:
+fun fact (n) =
+    if n =? 0 then 1 else n * fact (n - 1) fi
+
+val main =
+    print_int (fact (5))
+
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:311:8"
+EXPECTED: 
+120STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int function_ptr int int int).--------------------------------------------------------
+[ OK ]   02-addk.hobix
+
+INPUT:
+fun addk (k) = \(x) => x + k
+
+val f = addk (41)
+
+val main = print_int (f (1))
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   03-apply.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+
+val main = apply ((\(x) => print_int (x)), 42)
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ OK ]   04-curry.hobix
+
+INPUT:
+val curry =
+    \(f) => \(x) => \(y) => f (x, y)
+
+val add = \(x, y) => x + y
+
+val g = curry (add)
+
+val h = g (1)
+
+val main = print_int (h (41))
+
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  05-mutual-recursion.hobix
+
+INPUT:
+fun f (x) =
+    if x =? 0 then 1
+    else g (x - 1)
+    fi
+and g (x) =
+    if x =? 0 then 0
+    else f (x - 1)
+    fi
+
+val main = print_int (f (20))
+
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:311:8"
+EXPECTED: 
+1STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int function_ptr int int int).--------------------------------------------------------
+[ OK ]   06-compose.hobix
+
+INPUT:
+fun compose (f, g) =
+    \(x) => f (g (x))
+
+fun id (x) = x
+
+fun twice (x) = 2 * x
+
+val main =
+    print_int (twice (21));
+    print_int (compose (id, twice) (21));
+    print_int (compose (twice, id) (21));
+    print_int (compose (twice, twice) (10))
+OUTPUT: 
+42424240EXPECTED: 
+42424240STDERR: 
+--------------------------------------------------------
+[ OK ]   07-multiple-free-variables.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    \(k) => k + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+42EXPECTED: 
+42STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  08-multiple-free-variables-and-rec.hobix
+
+INPUT:
+val f = \(z) =>
+    val x = z + 1;
+    val y = x;
+    val t = 0;
+    fun g (x) = f(y + x, x)
+    and f (a, b) = z + a;
+    \(k) => g (k) + x
+
+val main = print_int (f (21) (20))
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:311:8"
+EXPECTED: 
+85STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int location int int int).--------------------------------------------------------
+[ OK ]   09-curryNM.hobix
+
+INPUT:
+val curry_1_2 = \(f) => \(x) => \(y) => f (x, y)
+val curry_1_3 = \(f) => \(x) => \(y1, y2) => f (x, y1, y2)
+val curry_1_4 = \(f) => \(x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_1_5 = \(f) => \(x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_1_6 = \(f) => \(x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val f2 = \(x1, x2) => x1 + x2
+val f3 = \(x1, x2, x3) => x1 + x2 + x3
+val f4 = \(x1, x2, x3, x4) => x1 + x2 + x3 + x4
+val f5 = \(x1, x2, x3, x4, x5) => x1 + x2 + x3 + x4 + x5
+val f6 = \(x1, x2, x3, x4, x5, x6) => x1 + x2 + x3 + x4 + x5 + x6
+
+val test1_2 = print_int (curry_1_2 (f2) (1) (2))
+val test1_3 = print_int (curry_1_3 (f3) (1) (2, 3))
+val test1_4 = print_int (curry_1_4 (f4) (1) (2, 3, 4))
+val test1_5 = print_int (curry_1_5 (f5) (1) (2, 3, 4, 5))
+val test1_6 = print_int (curry_1_6 (f6) (1) (2, 3, 4, 5, 6))
+
+val curry_2_2 = \(f) => \(o, x) => \(y) => f (x, y)
+val curry_2_3 = \(f) => \(o, x) => \(y1, y2) => f (x, y1, y2)
+val curry_2_4 = \(f) => \(o, x) => \(y1, y2, y3) => f (x, y1, y2, y3)
+val curry_2_5 = \(f) => \(o, x) => \(y1, y2, y3, y4) => f (x, y1, y2, y3, y4)
+val curry_2_6 = \(f) => \(o, x) => \(y1, y2, y3, y4, y5) => f (x, y1, y2, y3, y4, y5)
+
+val test2_2 = print_int (curry_2_2 (f2) (0, 1) (2))
+val test2_3 = print_int (curry_2_3 (f3) (0, 1) (2, 3))
+val test2_4 = print_int (curry_2_4 (f4) (0, 1) (2, 3, 4))
+val test2_5 = print_int (curry_2_5 (f5) (0, 1) (2, 3, 4, 5))
+val test2_6 = print_int (curry_2_6 (f6) (0, 1) (2, 3, 4, 5, 6))
+
+OUTPUT: 
+3610152136101521EXPECTED: 
+3610152136101521STDERR: 
+--------------------------------------------------------
+[ KO ]   -->  10-nesting.hobix
+
+INPUT:
+val f = \(x) =>
+  val g = \(y) =>
+    (val h = \(z) =>
+      (val i = \(t) => x + y + z + t;
+      i (z + 1));
+    h (y + 1));
+  g (x + 1)
+
+val main = print_int (f (3))
+
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:267:8"
+EXPECTED: 
+18STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int int int int int).NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int unit int int int).NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int int int int int).--------------------------------------------------------
+[ KO ]   -->  11-primitive.hobix
+
+INPUT:
+fun apply (f, x) = f (x)
+fun apply2 (f, x, y) = f (x, y)
+
+val main =
+    apply (print_int, 42);
+    apply (print_int, (apply2 (`+`, 31, 2)))
+
+
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:311:8"
+EXPECTED: 
+4233STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int location int int int).--------------------------------------------------------
+[ KO ]   -->  12-nested-mutual-recursion.hobix
+
+INPUT:
+fun h (x, y, z) =
+  fun f (x) =
+      if x =? 0 then z
+      else g (x - 1)
+      fi
+  and g (x) =
+      if x =? 0 then y
+      else f (x - 1)
+      fi;
+  g (x)
+
+val main =
+    print_int (h (2, 20, 42));
+    print_int (h (3, 20, 42))
+
+OUTPUT: 
+
+"Assert_failure src/retrolix/retrolixInterpreter.ml:311:8"
+EXPECTED: 
+2042STDERR: 
+NoSuchFunction or InvalidApplication of `read_block' (6 argument(s) provided : int int int location int int).--------------------------------------------------------
+GOOD: 6 / 12
+
+BAD:  0 / 0
+make[1]: Leaving directory '/home/opam/source/flap/tests/m6/hobix/to-retrolix/good'
+--------------------------------------------------------
+Global results:
+BAD:   0 / 0
+GOOD:  20 / 36
+--------------------------------------------------------
+make: Leaving directory '/home/opam/source/flap/tests/m6'
