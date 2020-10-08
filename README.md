@@ -14,3 +14,6 @@ Collection of my project during my 5 years of computer science student
 
 #### S1
 * ![Flap](https://github.com/vch9/Student_Projects/tree/main/flap) - **OCaml**
+
+#### S2
+* ![Regexp](https://github.com/vch9/Student_Projects/tree/main/regexp) - **Coq**
