@@ -1,0 +1,45 @@
+* <24/10/2019>
+** Projet recherche Laroussinie / Sangnier
+** 3 objectives
+** 1) parseur pour un language
+** 2) outil pour obtenir un graph des computations
+** 3) compilateur vers jSPIN + PRISM
+
+* <14/11/2019>
+** Fait :
+  - un parseur pour le langage, grammaire documentée
+  - quelques exemples
+** Quelques problèmes de conflits dans la grammaire, résolus.
+** À faire :
+  - typage
+  - warnings
+  - génération de graphes, générer des .dot
+  - messages d'erreur de parsing (pas urgent)
+
+
+* <20/01/2020>
+** Fait:
+- typage
+- warnings (déjà fait)
+- messages dans le parsing 
+- compilation du language vers PRISM
+** A faire:
+- génération de graphes, générer des .dot
+- enrichir le README pour expliquer de quelle configuration du système
+- on a besoin
+- reécrire les exemples avec la clarté comme objectif
+* <28/02/2020>
+** DONE
+   à faire du 20/02/2020
+
+** TODO
+  automates expressions omega régulières/formules régulières
+  rediger le rapport
+  travailler la présentation
+  À lire: 
+     https://padlet.com/diderotpournosretraites/j413cz0jqfk7
+https://universiteouverte.org/2020/02/13/le-5-mars-saffiche-partout/
+
+
+** REgler le pb de git
+   
