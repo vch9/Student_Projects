@@ -1,0 +1,10 @@
+Resize
+	- Description
+		cmd: resize width height
+
+		Re-dimensionne la taille de la fenêtre courante avec les arguments width height
+
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+		- width ou height négatifs
+

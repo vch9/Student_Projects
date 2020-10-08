@@ -1,0 +1,9 @@
+Copy
+	- Description:
+		cmd: copy
+
+		Enregistre la séléction actuelle sans y toucher
+
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+

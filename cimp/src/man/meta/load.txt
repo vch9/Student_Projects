@@ -1,0 +1,10 @@
+Load
+	- Description:
+		cmd: load path
+
+		Charge une image et l'affiche sur la fenêtre
+	- Erreurs:
+		- Arguments incomplets
+		- Image inconnue
+		- Dépendant de IMG_Load et des extensions supportés par SDL
+

@@ -1,0 +1,10 @@
+Rotation 
+	- Description:
+		cmd: rotation n
+
+		n: multiple de 90 degrés
+		Effectue une rotation sur la séléction avec un angle de rotation n
+
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+

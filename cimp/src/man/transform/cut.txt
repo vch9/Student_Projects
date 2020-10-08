@@ -1,0 +1,9 @@
+Cut
+	- Description:
+		cmd: cut
+
+		Enregistre la séléction actuelle, en détruisant celle-ci sur la fenêtre
+
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+

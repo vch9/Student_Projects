@@ -1,0 +1,15 @@
+- Main.h
+    Récupération de l'entrée de l'utilisateur
+    Manuel pour l'utilisateur
+
+- Parser.h
+    Analyse syntaxique/sémantique de la commande entrée par l'utilisateur.
+    Appel au module interprétation
+
+- Module interprétation (.h non définies encore)
+        - Sous module selection
+        - Sous module dessin
+        - Sous module sauvegarde
+        - Sous module modification
+
+

@@ -1,0 +1,17 @@
+Export
+	- Description:
+		cmd: export path
+
+		Enregistre la fenêtre courante à la position path en respectant le format
+
+		Formats acceptés:
+			- .jpeg
+			- .png
+			- .bmp
+			- .tiff
+
+	- Erreurs:
+		- Arguments incomplets
+		- Format non accepté
+		- Path invalide
+

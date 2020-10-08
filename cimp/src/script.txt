@@ -1,0 +1,23 @@
+Script:
+
+        - Description:
+                cmd: script
+                Permet la gestion d'un fichier script écrivant, lisant, supprimant ou exécutant des commandes.
+
+                options:
+                    -e : éxécute les commandes du fichier script
+
+                    -w : permet d'écrire ligne par ligne des commandes dans un fichier script
+
+                    -r : lis les commandes présentes dans le fichier script
+
+                    -rn : permet de renommer le fichier script
+
+                    -rl : permet de supprimer une certaine ligne présente dans le ficher script
+
+                    -rm : supprime le fichier script
+
+
+        - Erreurs:
+                - L'option entrée de la commande script non valide
+                - Arguments incomplets

@@ -1,0 +1,9 @@
+Shades of grey
+	- Description:
+		cmd: shades_of_grey
+
+		Transforme tous les pixels séléctionnés par ces pixels mis en nuances de gris
+
+	- Erreurs
+		- Appel a la méthode sans fenêtre ouverte
+

@@ -1,0 +1,10 @@
+Fill
+	- Description:
+		fill red green blue alpha
+		Red, green, blue, alpha sont des valeurs comprises entre 0 et 255.
+		Colorie avec le quadruplet (red,green,blue,alpha) les pixels séléctionnés sur la fenêtre courante.
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte.
+		- Red, green, blue, alpha non compris entre 0 et 255.
+		- Arguments incomplets.
+

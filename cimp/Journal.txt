@@ -1,0 +1,95 @@
+- Semaine du 4/02/19
+    - Résultat de la semaine passée:
+        /
+    - Objectifs pour la prochaine semaine:
+        - Création de l'interface pour l'utilisateur
+        - Création d'un parser pour l'intérprétation du langage
+        - Familiarisation avec la librairie sdl
+
+- Semaine du 18/02/19
+    - Résultat de la semaine passée:
+        - Parser et langage associé pour analyse syntaxiquement ce denier
+        - Proposition d'une architecture pour la réalisation du projet
+        - Connaissances sur la librairie sdl
+    - Objectifs pour la prochaine semaine:
+        - Interfaces des modules de l'architecture
+        - Spécifications de ces dernières
+
+- Semaine du 25/02/19
+    - Résultat de la semaine passée:
+        - Interfaces/Spécifications de l'architecture
+    - Objectifs pour la prochaine semaine
+        - Choix de modélisation pour la séléction afin de finir nos interfaces
+- Semaine du 04/03/19
+    - Résultat de la semaine passée:
+        - Décision et modélisation de la séléction
+        - Modification de nos interfaces avec la séléction
+    - Objectifs pour la prochaine semaine:
+        - Valentin -> Implémentation de Selection.c
+        - Paul -> Mise a jour du parser au vue du nouveau langage, début d'implémentation de meta.c
+        - Benjamin -> Entrée utilisateur, initialisation des fenêtres
+
+- Semaine du 11/03/19
+  -Résultat de la semaine passée:
+    -  Entrée utilisateur, initialisation des fenêtre
+    -  Mise a jour du parser au vue du nouveau langage, début d'implémentation de meta.c
+    -  Implémentation de Selection.c
+  -Objectifs pour la semaine prochaine:
+    - Paul -> Mise a jour parser + test des entrées, spécifications système
+    - Valentin -> Début du module de Transformation
+    - Benjamin -> Gestion des fenêtres
+- Semaine du 18/03/19
+ - Résultat de la semaine passée:
+    - Différentes méthodes implementés dans le module draw.h et transform.h
+    - Progression dans les objectifs de la semaine pasée
+ - Objectifs pour la prochaine semaine:
+    - Valentin -> Continuer/finir les modules transform.h et draw.h
+    - Paul -> Continuer la mise a jour du parser et l'implémentation de meta.c
+    - Benjamin -> Gérer les plusieurs fenêtres
+
+- Semaine du 25/03/19
+ - Résultat de la semaine passée:
+    - Module draw.h terminé, moitié du module transform.h fait
+    - Mise a jour du parser avec les modules implementés
+    - Ouverture plusieurs fenêtres
+    - Diagramme de spécification fait
+    -Module meta.h fait sans librairie externe
+ - Objectifs pour la prochaine semaine:
+    - Valentin -> Test unitaire sur les modules pour la correction du programme
+    - Benjamin -> Communication entre les fenêtres
+    - Paul -> Ajout de l'utilisation de librairie(s) externe(s) dans le module meta.h
+
+- Semaine du 01/04/19
+  - Résultat de la semaine passée :
+    - Mise à jour du parseur
+    - Test complet du module draw et selection
+    - Test partiel du module transform
+    - Ajout de sauvegarde du format tiff avec la librairie externe libtiff
+    - Interaction entre plusieurs fenêtres
+    
+  - Objectifs pour la semaine prochaine:
+    - Paul -> début de l'extension liée aux scripts
+           -> ajout d'un autre format image via une librairie externe dans le module de sauvegarde
+    - Valentin -> fin des tests du module transform
+               -> modification et amélioration des fonctions copy, paste et cut
+    - Benjamin ->fin du module transform
+
+- Semaine 08/04/19
+ - Résultat de la semaine passée:
+  - Parser adapté aux modules présents
+  - Test pour toutes les fonctions du module transform
+  - Amélioration de cut
+ - Objectifs pour la prochaine semaine:
+    Paul -> début de l'extension liée aux scripts
+    Benjamin -> fin du module transform
+    Valentin -> Optimisation et revue de code pour le projet actuel
+
+- Semaine 15/04/19
+ - Résultat de la semaine passée:
+ 	- Optimisation de selection, fragmentation, changement des test
+ 	- Fin du module transform
+ 	- Implémentation script
+ - Objectifs pour la prochaine semaine:
+ 	Paul -> édition de script
+ 	Benjamin -> amélioration de certaines parties, réglage de problèmes pour le multi-fenêtre
+ 	Valentin -> Manuel fonctionnel pour l'utilisateur

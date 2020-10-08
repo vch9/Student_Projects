@@ -1,0 +1,8 @@
+Black and white
+	- Description
+		cmd: black_and_white
+
+		Transforme chaque pixel séléctionée en noir et blanc
+	- Erreurs:
+		- Appel a la méthode sans fenêtre ouverte
+

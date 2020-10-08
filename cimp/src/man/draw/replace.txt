@@ -1,0 +1,12 @@
+Replace
+	- Description:
+		cmd: replace red green blue alpha new_red new_green new_blue new_alpha margin
+
+		Remplace la première couleur donnée par (red,green,blue,alpha)
+		par (new_red,new_green,new_blue,new_alpha) avec une marge de tolérance (0 si null)
+		sur la séléction courante
+	- Erreurs:
+		- Appel a la méthode sans fenêtre ouverte.
+		- Composants des couleurs non compris entre 0 et 255
+		- Arguments incomplets
+

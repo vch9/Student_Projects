@@ -1,0 +1,9 @@
+Open
+	- Description:
+		cmd: open name width height
+
+		Ouvre une nouvelle fenêtre de nomée name de dimension width*height
+	- Erreurs:
+		- Arguments incomplets
+		- Width ou height négatifs
+

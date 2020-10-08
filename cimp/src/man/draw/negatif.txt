@@ -1,0 +1,9 @@
+Negatif:
+	- Description:
+		cmd: negatif
+
+		Transforme tous les pixels de la séléction en l'inverse de ce pixel
+
+	- Erreurs
+		- Appel à la méthode sans fenêtre ouverte
+

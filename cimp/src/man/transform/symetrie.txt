@@ -1,0 +1,11 @@
+Symetrie:
+	- Description:
+		cmd: symetrie axe
+
+		axe : VERTICAL | HORIZONTAL
+		Effectue une symétrie sur la séléction avec l'axe VERTICAL ou HORIZONTAL
+
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+		- axe différent de VERTICAL ou HORIZONTAL
+

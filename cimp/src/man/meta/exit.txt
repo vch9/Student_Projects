@@ -1,0 +1,6 @@
+Exit
+	- Description:
+		cmd: exit
+
+		Ferme les fenêtres et quitte l'éxécution du programme
+

@@ -1,0 +1,34 @@
+S = Select | Transformation | ..
+
+axe = vertical | horizontal
+
+
+/* cut, past, copy a faire */
+
+Select =
+    |   select
+    |   select add 
+    |   select sub
+
+
+Transformation =
+    |   symetrie axe
+    |   rotation n
+    |   fill color
+    |   replace color1 color2
+    |   negatif
+    |   shades_of_grey
+    |   black_and_white
+    |   resize width height
+    |   trim reduce
+    |   trim extend
+    |   Copy Selection
+    |   Past Selection
+    |   Cut Selection
+
+
+Meta =
+  | open "nom de la fenêtre" largeur hauteur
+  | exit
+  | load path
+  | export path format

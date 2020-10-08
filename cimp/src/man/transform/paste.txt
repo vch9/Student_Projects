@@ -1,0 +1,9 @@
+Paste:
+	- Description:
+		cmd: paste
+
+		Imprime la sauvegarde enregistrée au préalable par copy/cut sur l'écran, puis permet à l'utilisateur de déplacer celle-ci.
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+		- Appel à paste sans sauvegarde
+

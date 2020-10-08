@@ -1,0 +1,10 @@
+Selection
+	- Description:
+		cmd: select | select add | select sub
+
+		- select: effectue une nouvelle séléction sur la fenêtre avec la souris
+		- select add: ajoute a la séléction actuelle une nouvelle séléction avec la souris
+		- select sub: retire de la séléction actuelle une nouvelle séléction avec la souris
+	- Erreurs:
+		- Appel à la méthode sans fenêtre ouverte
+
