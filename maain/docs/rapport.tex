@@ -1,0 +1,449 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[newfloat]{minted}
+\usepackage{titling}
+\usepackage{hyperref}
+\usepackage[margin=3cm]{geometry}
+
+\usetikzlibrary{positioning,arrows.meta}
+
+%%%%%%%%%%%%% DEFINE MINTED AND CAPTION ENV %%%%%%%%%%%%
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+\newenvironment{code}{\captionsetup{type=listing}}{}
+\SetupFloatingEnvironment{listing}{name=Code source}
+\graphicspath{ {images/} }
+
+%%%%%%%%%%%%%% DEFINE TITLE PAGE %%%%%%%%%%%%%%%%%%%%%%%
+
+\author{Chaboche - Fezzoua - Marais}
+\title{MAAIN : Rapport de projet}
+\date{01 Mars 2021}
+
+\makeatletter         
+\def\@maketitle{
+\begin{titlepage}
+    \vspace*{\fill}
+	\begin{center}
+		{\Huge \bfseries \sffamily \@title }\\[4ex] 
+		{\Large  \@author}\\[4ex] 
+		\@date\\[8ex]
+	\end{center}	
+ 	\vspace*{\fill}
+ \end{titlepage}
+}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% DOCUMENT %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\sffamily
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%% Introduction %%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\paragraph{}Dans ce rapport, nous allons vous présenter notre compte-rendu sur notre projet de moteur de recherche pour la matière MAAIN. Il s'agit bien entendu d'un projet jouet qui peut forcément être améliorer. Afin de faciliter la compréhension de notre démarche, nous avons suivi les questions des différents TPs (1, 2 et 3) en introduisant des précisions quand cela était nécessaire. 
+
+\paragraph{}Bonne lecture.
+
+\paragraph{}\textit{Étienne, Lycia et Valentin}
+
+
+
+%%%%%%%%%%%%%%%%%%%% Fonctionnement %%%%%%%%%%%%%%%%%%%%
+
+\section{Lancer le projet}
+\paragraph{}Nous avons mis le corpus de 10000 pages au bon endroit dans \textit{ressources/}. Nous vous avons aussi mis tous les fichiers pré-calculés dans le dossier \textit{ressources/}. Si vous voulez essayer de faire les calculs sur le corpus, vous pouvez lancer le script \textit{main.sh}. Cependant, il faut penser à effacer préalablement les fichiers du dossier \textit{ressources/}, sauf le corpus. Si vous voulez juste tester le site, vous pouvez utiliser le script \textit{site.sh} qui lance \textbf{flask}.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% TP1 %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Corpus}
+\paragraph{Sélection du corpus} Nous avons choisi de prendre un corpus qui parle de la musique en étoffant un peu avec la guitare et le piano. Pour capturer cela, nous avons utilisé l'expression régulière suivante :
+\begin{minted}{python} 
+theme = r"([mM]usique|piano|guitare|rock)"
+\end{minted}
+\paragraph{}Nous obtenons ainsi un corpus de \textbf{292895} pages sur lesquelles nous allons travailler. Afin de soulager nos ordinateurs de la création du , nous commençons, dans un premier temps, par récupérer les pages de notre thème via l'expression régulière présentée au dessus. Ensuite, nous effectuons 2 phases de nettoyages : la suppression des balises XML inutiles, liens, etc puis la lemmatisation du contenu des pages. Ces calculs représentent 99.9\% des temps d'exécution des pré calculs effectués avant de pouvoir déployer notre moteur de recherche. En effet, une fois nettoyée et lemmatisée, une page se traite rapidement grâce à la rapidité d'accès aux informations (suppression langage XML) et la pertinence des pages (mots lemmatisés).
+
+
+\section{Dictionnaire}
+\paragraph{Contenu} Nous avons récupéré tous les mots du corpus en prenant soin de les normaliser avant. Nous récupérons aussi les titres des articles car nous ne voulons pas perdre ces valeurs qui sont importantes pour l'algorithme des requêtes. Dans les faits, nous plafonnons le nombre de mots provenant des titres à 100000. Nous estimons que 100000 mots uniques parmi les 292895 titres suffisent à les représenter dans le dictionnaire. Nous rajoutons ensuite les 100000 mots provenant du corpus.
+
+\paragraph{Lemmatisation} Afin de ne conserver que les mots du dictionnaire en évitant les duplications, nous avons utilisé un algorithme de lemmatisation grâce à la bibliothèque \textbf{nlp} de Python. Ainsi, chaque fois que nous enregistrons un nouveau mot, nous le normalisons comme suit:
+\begin{minted}{python}
+for word in nlp(text.lower()):
+  word = unidecode.unidecode(word.lemma_.strip())
+\end{minted}
+
+
+\section{Matrice}
+\paragraph{}Dans cette partie, nous allons nous occuper de la représentation de la matrice d'adjacence sous forme CLI. Pour commencer, nous pouvons d'abord regarder 
+leur fonctionnement en répondant aux questions proposées du \textit{TP1-Exercice 4}.
+
+\subsection{TP1 - Exercice 4}
+\paragraph{1.} Voici un graphe qui représente les liens entre 4 pages.\\
+\begin{center}
+\begin{tikzpicture}[auto,vertex/.style={draw,circle}]
+    \node[vertex] (a) {0};
+    \node[vertex,right=1cm of a] (b) {1};
+    \node[vertex,below right=1cm and 0.5cm of a] (c) {2};
+    \node[vertex,above right=1cm and 0.5cm of a] (d) {3};
+    \path[-{Stealth[]}]
+      (a) edge (b)
+	  (a) edge (c)
+	  (a) edge (d)
+      (b) edge (a)
+      (b) edge (d)
+      (c) edge (a)
+      (c) edge (b)
+      (d) edge (b);
+\end{tikzpicture}
+\end{center}
+
+\paragraph{}Ce graphe est représenté par la matrice d'adjacence suivante :
+$$
+\begin{pmatrix}
+0 & 1/3 & 1/3 &1/3\\
+1/2 & 0 & 0 & 1/2\\
+1/2 & 1/2 & 0 & 0\\
+0 & 1 & 0 & 0\\
+\end{pmatrix}
+$$
+
+\paragraph{2.} Dans le cas d'indexation de \textit{n} pages, chaque page est représentée par un sommet. Le graphe aura \textit{n} sommets. On se retrouve avec une matrice d'adjacences de taille $n*n = n^2$ car il faut une ligne et une colonne pour faire référence à chaque page et à chaque lien dans chaque page. On peut constater qu'il est  impossible de stocker une matrice d'une taille de  $(10^9)^2 = 10^{18}$ en mémoire.
+
+\paragraph{3.} Si l'on se place dans le cas où l'on suppose que chaque page contient 10 liens en moyenne, on se retrouve alors avec $10n$ coefficients non-nuls dans la matrice et, par conséquent, $n2-10n = n(n-10)$ coefficients nuls. Cela signifie que la matrice prend une place considérable pour stocker des coefficients nuls. Si l'on doit stocker la précédente matrice en supposant $n = 10^9$, on stocke une structure en $O(10^{10})$ ce qui est beaucoup plus raisonnable.  
+
+\subsection{TP1 - Exercice 5}
+\paragraph{1.} La matrice CLI est représentée comme suit: \\
+C:
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+ 1 & 2 & 3 & 4 & 5 & 6 \\
+ \hline
+\end{tabular} \\
+L: 
+\begin{tabular}{ |c|c|c|c|c| } 
+ \hline
+ 0 & 1 & 4 & 7 & 7 \\
+ \hline
+\end{tabular} \\
+I:
+\begin{tabular}{ |c|c|c|c|c|c|c| } 
+ \hline
+ 2 & 0 & 1 & 3 & 1 & 2 & 3 \\
+ \hline
+\end{tabular} \\
+
+\subsection{TP1 - Exercice 6}
+\paragraph{1.} Dans notre cas, les sommets du graphes correspondent aux pages de notre corpus. Les arcs représentent les liens entre les différentes pages de notre corpus. Nous avons \textbf{292895} sommets et \textbf{4110504} arcs. On se retrouve donc avec une matrice CLI de taille $292 896 + 2 * 4 110 504 = 8 513 904$.
+
+\paragraph{2.} Soit un dictionnaire de taille m et n pages visitées pour en moyenne 200 mots différents dans chaque page, on se retrouve avec une relation mots-pages de taille $200 * n$. Ce nombre ne dépend absolument pas de m car c'est le nombre de mots par page en moyenne qui compte. Ce n'est pas raisonnable de vouloir indexer toutes les pages car certaines pages contiennent uniquement des références vers d'autres pages et agissent comme des indexes qui ne nous intéressent pas dans un moteur de recherches. En outre, on ne souhaite pas non plus indexer les parties qui sont indiquées dans le fichier \textit{robot.txt}.
+
+\subsection{TP1 - Exercice 7}
+\paragraph{1.}Afin de nous repérer dans les pages, nous avons utilisé une structure de données que nous avons appelée \textbf{index}. Nous les stockons en mémoire de deux façons : une sous forme normalisée grâce à \textbf{nlp} et une sous forme brute pour pouvoir fabriquer des liens url à partir des titres. Afin de faciliter nos interactions avec ces pages, nous avons la possibilité de charger le fichier en mémoire de deux façons possibles :
+\begin{itemize}
+\item En récupérant par id: \\ \begin{tabular}{ |c|c| } 
+ \hline
+ id & name \\
+ \hline
+ 0  & Mozart \\
+ 1  & Chopin \\
+ ...    & ... \\
+ n  & ... \\
+ \hline
+ \end{tabular} \\
+ \item En récupérant par nom pour faire un annuaire inversé : \\ \begin{tabular}{ |c|c| } 
+ \hline
+ id & name \\
+ \hline
+ Mozart & 0 \\
+ Chopin & 1 \\
+ ...    & ... \\
+ ...    & n \\
+ \hline
+\end{tabular}
+\end{itemize}
+
+\paragraph{2.} Pour pouvoir capturer tous les liens du corpus, nous utilisons l'expression régulière suivante :
+\begin{minted}{python}
+regex = r"\[\[([\w|\s]*)\]\]"
+\end{minted}
+Cela nous permet de récupérer les expressions qui sont comprises dans \textbf{[[ ... ]]}
+
+\paragraph{3.}Pour remplir la relation mots-pages, nous avons éliminé le problème d'accents et de duplication. En effet, comme expliqué précédemment nous avons normalisé et lemmatiser le corpus que nous avons exporté. Ainsi, nous ne travaillons que sur des mots racines. Cela permet de remplir facilement la relation mots-pages en calculant au passage les fréquences des mots.
+
+\paragraph{4.}Contrairement à la proposition faite dans le TP, nous stockons les informations lors des passes de sauvegarde du corpus et de lemmatisation. Cela nous permet de générer les structures une fois que nous avons fait nos passes et d'avoir la possibilité de relancer les parties suivantes en utilisant toutes les informations que nous avons récupérer. Nous effectuons donc les passes suivantes : les fréquences puis après nous construisons la matrice CLI en nous basons sur les liens que nous avons récupérés.
+
+\paragraph{5.}Si nous devions procéder sur Internet, nous aurions pu utiliser l'algorithme Mercartor afin de faire nos requêtes directement au site en nous assurant qu'elles ne saturent pas celui-ci. En outre, nous aurions fait les calculs de fréquences à la volée car cela n'aurait pas été tenable sinon.
+
+\subsection{TP1 - Exercice 8}
+\paragraph{1.} Nous avons déduit le \textit{TF} après avoir fait tous les calculs. Pour cela, nous parcourons la relations mots-pages qui contient les fréquences et nous calculons au fur et à mesure du parcours les \textit{TF}.	
+
+\paragraph{2.}De la même manière que \textit{TF}, nous parcours la relation et nous stockons la somme du carré des normes pour chaque document. À la fin, nous calculons pour chacun d'eux la racine carré de cette somme afin d'obtenir une norme $N_d$. Nous avons pu constater des disparités entre les normes liées à la taille des différentes pages. En effet, si une page est très conséquente, elle contient beaucoup de thèmes différents et beaucoup de mots, le score $N_d$ devient donc rapidement grand et nous pose des soucis plus tard.
+
+\paragraph{3.} Nous avons fait le choix de stocker \textit{TF} et $N_d$ séparément afin de pouvoir les utiliser à d'autres endroits du code. Cela nous permet aussi de refaire certaines passes sans nous soucier des précédentes.
+
+\paragraph{4.} Comme notre corpus n'est pas trop grand, nous avons pu nous permettre de conserver tous les mots lemmatisés du corpus.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% TP2 %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Produit Matrice Vecteur}
+\subsection{TP2 - Exercice 1}
+\paragraph{1 et 2.} Pour le calcul du produit de la transposée de la matrice CLI avec le vecteur du page rank, nous avons appliqué l'algorithme vu en cours dans sa version la plus optimisée :
+\begin{minted}{python}
+    def compute_transp(self, pi):
+        p = Vecteur(self.n)
+        s = 0
+        for i in range(0, self.n):
+            if self.L[i] == self.L[i+1]:
+                s += pi[i]
+            else:
+                for j in range(self.L[i], self.L[i+1]):
+                    p.set(self.I[j], p[self.I[j]] + self.C[j] * pi[i])
+        s = float(s/self.n)
+        for i in range(0, self.n):
+            p.set(i, p[i] + s)
+        return p
+\end{minted}
+\paragraph{}Nous faisons le calcul de la matrice transposée en parcourant ligne par ligne. On ajoute à chaque fois la composante du vecteur à laquelle on additionne la nouvelle composante multipliée par le coefficient de la matrice. Dans le cas où la ligne est vide on retient la valeur à l'indice i  que l'on ajoute à la somme des lignes vides. À la fin, on ajoutera à chaque composante du vecteur \textit{p} la somme divisée par la taille n de la matrice.
+
+
+\section{PageRank}
+\subsection{TP2 - Exercice 2}
+\paragraph{Représentation de la matrice d'adjacence du TP2 : }
+$$
+\begin{pmatrix}
+\frac{\varepsilon}{4} & \frac{1 - \varepsilon}{2} & \frac{\varepsilon}{4} & \frac{1 - \varepsilon}{2} \\
+\\
+\frac{\varepsilon}{4} & \frac{\varepsilon}{4} & \frac{4 - 3\varepsilon}{4} & \frac{\varepsilon}{4} \\
+\\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{4} & \frac{1}{4} \\
+\\
+\frac{1 - \varepsilon}{12} & \frac{1 - \varepsilon}{12} & \frac{1 - \varepsilon}{12} & \frac{\varepsilon}{4} \\
+\end{pmatrix}
+$$
+
+\subsection{TP2 - Exercice 3}
+\paragraph{1-2.} Voici notre définition de l'algorithme du page rank : \\
+\begin{minted}{python}
+    def pagerank(self,k):
+        alpha = 0.15
+        pi = Vecteur(self.n , 1 / self.n)
+        J = Vecteur(self.n, alpha / self.n)
+        for i in range(0,k):
+            pi = self.compute_transp(pi)
+            pi.multiply_by_factor(1 - alpha)
+            pi.sum_with(J)
+        return pi
+\end{minted}
+\paragraph{}Notre page rank prend un \textit{k}, le nombre d'itérations. Nous avons fixé le $\alpha$ (ou $\varepsilon$ dans ce cas) à 0.15 car cela fonctionne assez bien sur nos exemples. En outre, nous lançons le calcul sur 50 itérations. Par défaut, nous mettons la définition de notre vecteur \textit{pi} comme étant le vecteur équiprobable avec $\frac{1}{n}$.
+
+
+
+\section{Application}
+\subsection{TP2 - Exercice 4}
+\paragraph{1.}Comme dit précédemment nous avons fixé le $\varepsilon$ à 0.15 et le nombre d'itérations à 50. Nous mettons à peu près \textbf{2 minutes} à faire le calcul du page rank.
+
+\paragraph{2.}Nous avons vérifier sur les pages que nous avions obtenu des résultats cohérents en nous assurant que la somme faisait bien un.
+
+\paragraph{3.}On a enregistré ce résultat sur disque afin d'y avoir accès plus facilement ultérieurement.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% TP3 %%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Traitement de la requête}
+\subsection{TP3 - Exercice 1}
+\paragraph{1.} Lorsque nous recevons la requête nous commençons par la normaliser. Le code suivant est la partie de notre projet qui se charge de ça :
+\begin{minted}{python}
+dico = DICO.load_dico_as_dict_inverse("ressources/dico.txt")
+def transf_request_to_indexes(request):
+    # Request is now associated indexes
+    r = []
+    normalized = UTIL.normalize_text(request)
+    for w in normalized.split(' '):
+        if w in dico:
+            r.append(dico[w])
+    return r
+\end{minted}
+\paragraph{}Comme nous pouvons le voir ici, nous normalisons le texte grâce à \textbf{nlp}, de la même façon que le collecteur, pour avoir la racine. Nous utilisons aussi la bibliothèque \textbf{unicode} afin d'être en accord avec les mots dans le corpus et dans le dictionnaire. Ensuite, nous récupérons l'index de chaque mot afin d'avoir uniquement des entiers à traiter. Finalement, on renvoie cette liste.
+
+
+\section{Calcul des résultats}
+\subsection{TP3 - Exercice 2}
+\paragraph{1.} Une fois que nous avons une requête lisible par l'algorithme simple, nous devons trouver les pages qui contiennent tous ces mots. Pour se faire, nous utilisons la structure de données \textit{all\_pages} qui contient, pour chaque mot, la liste des documents où il se trouve.
+
+\newpage % Besoin pour le code.
+
+\begin{minted}{python}
+def find_same_pages(all_pages, pointeurs):
+    len_pages = [len(pages) for pages in all_pages]
+    def index_still_in(pointeurs, len_pages):
+        for ((_, _, idx), n) in zip(pointeurs, len_pages):
+            if idx >= n:
+                return False
+        return True
+        
+    def find_max(pointeurs):
+        max = 0
+        for (_, idx_page, idx) in pointeurs:
+            x = all_pages[idx_page][idx][0]
+            if x > max:
+                max = x
+        return max
+\end{minted}
+
+\paragraph{}Nous nous servons de deux fonctions auxiliaires pour le calcul des pages en commun. La première fonction, \textit{index\_still\_in} nous permet de savoir si une des listes est arrivée à la fin, auquel cas il faut arrêter le parcours et renvoyer le résultat. Notre deuxième fonction, \textit{find\_max} prend la liste des pointeurs sur les différentes listes de documents et renvoie la valeur du document la plus grande (page avec l'id le plus élevé).
+
+\begin{minted}{python}
+def find_same_pages(all_pages, pointeurs):
+    ...
+    res = []
+    while (index_still_in(pointeurs, len_pages)):
+        max = find_max(pointeurs)
+        good = True
+        for i in range(len(pointeurs)):
+            [_, idx_page, idx] = pointeurs[i]
+            if (all_pages[idx_page][idx][0] != max):
+                pointeurs[i][2] = idx + 1
+                good = False
+
+        if (good):
+            res.append(all_pages[0][pointeurs[0][2]])
+            for i in range(len(pointeurs)):
+                pointeurs[i][2] += 1
+    return res
+\end{minted}
+
+\paragraph{}Maintenant que cela est fait, nous pouvons faire notre parcours suivant l'algorithme vu en cours. Il consiste à parcourir les listes de documents qui sont dans un ordre trié via \textit{TF} qui est utilisé ici. Notre fonction \textit{find\_same\_pages} construit un résultat, \textit{res} qui contient la liste des pages qui contiennent tous les mots de la requête. L'algorithme est le suivant :
+ \begin{itemize}
+ 	\item Tant qu'une des listes n'est pas arrivée à la fin, on boucle.
+ 	\item À chaque tour de boucle, on récupère la valeur maximum à la position de chaque pointeur sur liste. Ensuite pour chaque liste on récupère la valeur (id) du document à la position de son pointeur et on regarde si la valeur est égale à max.
+ 	\item Si la valeur est différente de max, on incrémente le pointeur de la liste concernée et indique qu'au moins une liste n'avait pas la valeur max.
+ 	\item Sinon, si toutes les valeurs associées aux différents pointeurs sont max, on ajoute la page concernée dans la liste des pages qui contiennent les mots et on incrémente les pointeurs de tous les éléments. 
+ \end{itemize}
+
+\paragraph{2.} Maintenant que nous avons récupéré les pages en commun, nous pouvons passer au calcul du \textit{score(d,r)}
+\begin{minted}{python}
+def pages_scores(same_pages, sum_idf, nr, nd):
+    def score(d, tf):
+        pd = pageranks[d]
+        bpd = beta * pd
+        fdr = (sum_idf * tf)
+        afdr = alpha * fdr
+        return afdr + bpd
+    return [(d, score(d, tf)) for (d, tf) in same_pages]
+\end{minted}
+
+Pour le calcul du score, nous utilisons :
+\begin{itemize}
+	\item \textit{same\_pages} qui contient la liste des documents avec leur \textit{TF}.
+	\item \textit{sum\_idf} qui contient la somme des \textit{IDF} des mots de la requête.
+	\item $N_r$ qui représente la norme du vecteur requête.
+	\item $N_d$ qui représente la norme du vecteur document.
+\end{itemize}
+\paragraph{}Nous utilisons la fonction annexe  \textit{score} qui calcule le score pour chaque document. Pour cela, nous récupérons le page rank du document et nous lui associons un coefficient $\beta$ donc nous expliquerons le calcul plus tard. Ensuite, nous multiplions la somme des \textit{IDF} avec le \textit{TF} du document. Ce résultat est multiplié par un autre coefficient, $\alpha$ et nous retournons le somme des deux comme score. Nous avons choisi de ne pas diviser par le produit de $N_d$ par $N_r$ car nous nous retrouvions avec des résultats faussés. En effet, cela avait tendance à écraser les pages contenant beaucoup de mots et donc de diminuer la visibilité de ces pages. Enfin, nous appliquons le calcul du score à chacun des documents de la requête. Ces scores seront triés plus tard par score décroissant afin d'avoir la page avec le score le plus élevé en premier.
+\paragraph{}Pour le calcul des $\alpha,\beta$, nous avons fait le calcul en prenant : $$\alpha = \tfrac{Moyenne(pagerank)}{Moyenne(f_d)}\ et\ \beta = 1 - \alpha$$
+\paragraph{}Nous obtenons les valeurs suivantes : $$\alpha = 5.8042711010239384e-05\ et\ \beta  = 0.9999419572889897$$.
+
+\subsection{TP3 - Exercice 3}
+\paragraph{}L'algorithme de récupération des pages n'est ensuite qu'un simple chaînage des méthodes présentées précédemment.
+\begin{minted}{python}
+
+
+def simple(request):
+    r = transf_request_to_indexes(request)
+    if len(r) == 1:
+        return nocompute_request(r)
+    else:
+        return normal_request(r)
+
+
+def nocompute_request(r):
+  score_m = PC.get_score_m(score_file)
+  return score_m.get(r[0], [])
+
+
+
+
+
+
+def normal_request(r):
+    (_, sum_idf, nr) = get_idfs(r)
+    nd = PC.get_ND("ressources/nd.txt")
+    all_pages = get_pages(r)
+    if  all_pages == []:
+        return []
+    pointeurs = [[w, i, 0] for i, w in enumerate(r)]
+    same_pages = find_same_pages(all_pages, pointeurs)
+    pages = pages_scores(same_pages, sum_idf, nr, nd)
+    pages = sorted(pages, key=itemgetter(1), reverse=True)
+    score = [d for (d, _) in pages]
+    return score
+\end{minted}
+
+\paragraph{}Nous recevons la requête que nous normalisons puis, si cette requête normalisée contient plus d'un mot, nous faisons le calcul des pages similaires, du \textit{TF / IDF} et du score. Autrement, s'il s'agit d'une requête à un mot unique, nous récupérons la valeur pré calculée dans le dictionnaire qui contient la liste des pages résultat. 
+
+\subsection{TP3 - Exercice 4}
+\paragraph{}Nous avons essayé de programmer une version de \textbf{WAND}. Cependant, face au manque de temps et à la complexité d'implémenter ces structures efficacement dans Python, nous avons décidé de nous concentrer pour que l'algorithme simple soit efficace sur les requêtes à un mot et plutôt efficace sur les requêtes plus longue.
+
+
+
+\section{Déploiement du site}
+\subsection{TP3 - Exercice 5}
+\paragraph{}Nous avons choisi de déployer notre site à l'adresse suivante sur un petit serveur que nous avons loué pour l'occasion. Le site se trouve sur \url{euterpe.live}.
+
+\subsection{TP3 - Exercice 6}
+\paragraph{}Il y a beaucoup de point que nous pourrions améliorer pour ce moteur de recherche. Déjà, nous utilisons un système de collecte sur un fichier ce qui signifie que pour le mettre à jour nous devrions relancer régulièrement notre collecteur en téléchargeant le nouveau fichier source. Ensuite, il ne s'occupe que d'une partie des pages web, il n'est donc pas capable de passer à l'échelle sur le web comme nous l'avons expliqué plus haut. En effet, notre collecteur est rapide pour \texttt{notre} utilisation. Nous aurions aussi pu utiliser le multithreading afin d'optimiser le temps sur chaque page en traitant plusieurs pages en même temps. Autrement, nous aurions implémenter l'algorithme \textbf{Mercator}. Aussi, nous n'avons pas implémenter l'algorithme WAND ce qui n'est pas grave ici car notre corpus n'est pas assez gros pour que la différence soit notable. Enfin, nous pourrions améliorer l'ensemble de notre programme en utilisant un langage de programmation compilé comme \textbf{Rust}, \textbf{Go} ou encore \textbf{OCaml} et qui possède des structures de données utiles dans ce cas.
+
+
+
+
+\section{Choix d'implémentation}
+\subsection{Optimisations}
+\paragraph{}Afin de répondre aux défis techniques du projet nous avons fait un choix majeur dans nos choix d’implémentation : l'optimisation mémoire.
+\paragraph{}Notre fichier pré calculé le plus gros: les fréquences, représente à lui seul 11GB de données (lorsque chargé sur Python). Totalement impossible pour nos pc de se permettre de le charger en RAM (afin de calculer les TF par exemple), nous avons décider de perdre du temps d'exécution (ie. charger toutes les fréquences en tant que dictionnaire par exemple). Nous chargeons ligne par ligne les fichiers afin d'effectuer une ouverture partielle en mémoire et ceci est tout à fait supportable par nos machines. Nous usons de cette méthode pour charger tous nos fichier. Par exemple, lorsque nous voulons calculer le score d'une requête pour le moteur de recherche, les TF ne sont pas accessibles en 0(1) mais vont nécessiter de parcourir le fichier TF jusqu'à trouver la ligne correspondante. Cela peut permettre à notre moteur de passer à une plus grande échelle et de ne pas devoir investir dans de nombreuses barrettes de RAM au coût du temps d'exécution.
+\paragraph{}Nous avons eu l'occasion d'avoir accès au serveur de l'UFR afin de faire tourner nos calculs longs. Nous avons pu nous permettre d'effectuer une lemmatisation de tout notre corpus via des librairies externes coûteuses comme cité plus tôt (nlp, spacy), mais qui nous permettent de produire des résultats plus cohérents et une meilleur pertinence dans notre moteur de recherche. Cela nous a aussi permis de pouvoir pré-calculer toutes les requêtes d'un seul mot présentes dans notre dictionnaire, accélérant le temps de réponse de notre moteur sur ce type de requête.
+
+\subsection{Temps de calcul}
+\paragraph{}Bien que nos calculs ne s'effectuent que sur un mono-thread, nous avons eu accès à la machine de l'UFR \textbf{lulu} multi-coeur qui possède une bien plus grande quantité de RAM que sur nos machines locales. Voici alors nos temps de calculs pour les différentes étapes effectués avant de pouvoir déployer le moteur :
+\begin{itemize}
+	\item{Filtrer wikipédia pour notre thème} 00:21:23
+	\item{Nettoyage des pages XML} 01:37:26
+	\item{Lemmatisation des pages} 16:01:35
+	\item{Création du dictionnaire} 00:01:09
+	\item{Création des fréquences} 00:41:04
+	\item{Création des IDF}00:00:01
+	\item{Création des TF} 00:01:50
+	\item{Création des ND} 00:01:06
+	\item{Calcul des page ranks} 00:02:08
+	\item{Pré-calcul des requêtes mot unique} 32:05:02
+\end{itemize}
+
+%%%%%%%%%%% Conclusion %%%%%%%%%%%%%
+
+\section{Conclusion}
+Cette expérience nous aura permis de comprendre les tenants et les aboutissants d'un moteur de recherche jouet. Nous comprenons pourquoi il n'y a pas autant de nouveaux acteurs qui se lancent sur ce marché. En effet, il s'agit d'une technologie où chaque optimisation peut faire la différence et qui demande une infrastructure gigantesque, celle-ci n'étant pas à la portée du premier venu pour pouvoir indexer le web.
+
+\end{document}

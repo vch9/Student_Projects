@@ -23,3 +23,6 @@ You can see that I do like OCaml.
 
 ## M2
 * ![Maain](https://github.com/vch9/Student_Projects/tree/main/maain) - **Python**
+* ![Analyse statique et typage](https://github.com/vch9/Student_Projects/tree/main/ast) - **OCaml**
+* ![Fopix](https://github.com/vch9/Student_Projects/tree/main/fopix) - **Scala**
+* ![Prog-synchrone](https://github.com/vch9/Student_Projects/tree/main/prog-sync) - **Heptagon**

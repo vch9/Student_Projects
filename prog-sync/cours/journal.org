@@ -1,0 +1,61 @@
+#+TITLE: Programmation synchrone 2020/2021 -- M2 Informatique & EIDD
+#+AUTHOR: Adrien Guatto
+#+EMAIL: guatto@irif.org
+#+LANGUAGE: fr
+#+OPTIONS: ^:nil p:nil
+
+Ce fichier contient le journal du cours. Il fait référence aux
+[notes](notes-de-cours-progsync.pdf).
+
+* Cours 01 <2020-09-29>
+  Cette séance a traité des notes de cours, de Introduction à Premiers
+  programmes inclus. On a même été un peu au delà, avec un premier exemple bref
+  de noeud Heptagon séquentiel (à état non-trivial).
+* Cours 02 <2020-10-06>
+  Cette séance a traité des notes de cours, deuxième section, jusqu'à
+  "Causalité" inclus.
+* Cours 03 <2020-10-13>
+  Cette séance a couvert la deuxième section des notes de cours, jusqu'au début
+  de la section "automates". En revanche, les règles du calcul d'horloge et
+  l'exemple de l'intégrateur n'ont pas été traités.
+* Cours 04 <2020-10-20>
+  On a commencé par revenir sur les horloges discutées lors du cours 3, en
+  discutant des règles qui dictent si une expression est correcte du point de
+  vue des horloges, puis en présentant un exemple (un intégrateur désactivable).
+  On a ensuite détaillé le fonctionnement des automates (types de transition,
+  mémoires ~last~) comme dans les notes de cours.
+* Cours 05 <2020-10-27>
+  On a convert la sous-section sur les tableaux, en s'arrêtant avant la
+  concaténation et les itérateurs.
+* Cours 06 <2020-11-03>
+  On a couvert la sous-section "itérateurs" de la section des notes de cours qui
+  concerne les tableaux. Ensuite, on a discuté de synthèse audio en Heptagon,
+  cf. le sous-dossier [[file:audio/][audio]].
+* Cours 07 <2020-11-09>
+  On a discuté du projet, dont le code et le sujet peuvent être trouvés dans le
+  répertoire [[file:../projet/][projet]].
+* Cours 08 <2020-11-17>
+  On a discuté du projet, ainsi que de l'exemple du pendule inversé, qui est un
+  exemple classique de l'automatique. On s'en est servi pour illustrer les
+  notions de contrôleurs BangBang et PID, cf. le contenu du dossier
+  [[file:inverted-pendulum/][inverted-pendulum]].
+* Semn. 09 <2020-11-23>
+  Pas de cours.
+* Cours 10 <2020-11-30>
+* Cours 11 <2020-12-01>
+  On a commencé avec quelques informations :
+
+  - l'examen aura lieu le jeudi 17 décembre de 11h à 13h. La salle est encore
+    inconnue à l'heure où je rédige ces lignes;
+
+  - les messages d'erreur "wrong direction" et "too fast" peuvent être
+    actuellement ignorés sur le projet;
+
+  - le sonar est actuellement cassé, il faut ignorer la gestion des obstacles
+    pour l'instant, je vais essayer de la réparer.
+
+  - j'ai démontré comment utiliser le script ~hept-plot~ et le module ~Trace~
+    pour déboguer le projet.
+
+  Ensuite, on a discuté de la compilation d'Heptagon, voir la dernière section
+  des notes de cours.

@@ -1,0 +1,134 @@
+(*
+ CHABOCHE - MARAIS
+ Controller
+*)
+
+
+open Globals
+open Debug
+
+
+(* Constant for speed calculus. *)
+const kv : float = 500.0 /. 24.0
+
+(* Constant for angle calculus. *)
+const kr : float = 360.0 /. (cMAXSPEED *. 15.7)
+
+(* Constant for correction calculus. *)
+const turncoeff : float = (-.35.0)
+
+(* Alias for the timestep. *)
+const dt : float = Globals.timestep
+
+(* Default action to do when nothing is specified. *)
+const default_action : itielt = { act = Go ; param = 0.0 }
+
+(* Constant to describe when the car has no speed *)
+const no_speed : wheels = { left = 0.0; right = 0.0 }
+
+
+
+(* Function that compute if we reached the end of the itinerary. *)
+fun is_arrived (iti : itielts ; index : int) returns (arriving : bool)
+let
+  arriving = (iti.[index] default default_action).act = Stop;
+tel
+
+(* PID regulator that computes the error from the line deviation. *)
+node pid(y, r, kp, ki, kd: float) returns (u: float)
+var e : float;
+let
+  e = r -. y;
+  u = (kp *. e) +. (ki *. Utilities.integrator(e, 0.0, dt)) +. (kd *. Utilities.derivative(e, dt));
+tel
+
+(* Operator that determines whether we should turn left,
+   turn right or keep moving forward. *)
+node turn_decoder(sens: sensors) returns (turn: float)
+var r,g,b: float;
+let
+  r = Mathext.float(sens.s_road.red);
+  g = Mathext.float(sens.s_road.green);
+  b = Mathext.float(sens.s_road.blue);
+  turn = if (b = 0.0 ) then 0.0 else ((r -. g) /. b);
+tel
+
+(* Operator that computes the real wheel speed thanks to the PID and the turn decoder *)
+node get_turn(sens: sensors; speed: float) returns (rspeed: wheels)
+var last x0 : float = 0.0;
+    kP, kI, kD : float;
+let
+  kP = 4.8;
+  kI = 0.7;
+  kD = 0.7;
+  x0 = pid(turn_decoder(sens), 0.0, kP, kI, kD);
+  rspeed = {
+    left = (speed *. kv -. x0 *. turncoeff);
+    right = (speed *. kv +. x0 *. turncoeff)
+  };
+tel
+
+
+
+(* Operator that describes how the car is acting when it is moving foreward. *)
+node move_forward(sens : sensors ; speed : float; already_seen : bool)
+returns (rspeed: wheels ; finished : bool; new_already_seen: bool)
+var is_green, is_red, is_obstacle_near : bool;
+let
+  rspeed = if (is_red or is_obstacle_near) then no_speed else get_turn(sens, speed);
+  is_green = (Utilities.decode_color(sens.s_road) = Green);
+  is_red = (
+     (* Utilities.decode_color(sens.s_road) =  Red and *) (
+      Utilities.decode_color(sens.s_front) = Amber or
+      Utilities.decode_color(sens.s_front) = Red
+     )
+  );
+  is_obstacle_near = sens.s_sonar < 100;
+  finished = is_green and (not already_seen);
+  new_already_seen = is_green;
+tel
+
+(* Operator that computes the time the car have to turn at cMAXSPEED to move 
+   from an angle [angle] and if it's already compute, it will keep moving until
+   we've reached the time. *)
+node rotate(angle : float) returns (rspeed: wheels ; finished : bool)
+var time : float ;
+let
+  rspeed =
+    if angle >=. 0.0 then { left = -. cMAXSPEED ; right = cMAXSPEED }
+    else { left = cMAXSPEED ; right = -. cMAXSPEED };
+  time = (Utilities.abs(angle) /. (kr *. cMAXSPEED)) fby (time -. timestep);
+  finished = (time <=. 0.0);
+tel
+
+
+
+(* It's the main part. It controls the type of movement the car is supposed to
+   do, the evolution of the itineray and the status of the arriving. *)
+node controller(sens : sensors; iti : itielts)
+returns (rspeed : wheels; arriving : bool)
+var index : int ;
+    finished: bool;
+    action: action;
+    param: float;
+    last already_seen : bool = false;
+let
+  action = (iti.[index] default default_action).act;
+  param = (iti.[index] default default_action).param;
+
+  index = 0 fby (if finished then index+1 else index);
+  arriving = is_arrived(iti, index);
+
+  automaton
+    state Forward
+    do
+      (rspeed, finished, already_seen) = move_forward(sens, param, last already_seen);
+    unless (action = Turn) then Turn
+
+    state Turn
+    do
+      (rspeed, finished) = rotate(param);
+      already_seen = finished;
+    until finished then Forward
+  end
+tel
