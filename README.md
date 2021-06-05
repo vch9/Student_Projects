@@ -1,5 +1,6 @@
 # Student Projects
-Collection of my project during my 5 years of computer science student
+Collection of my project during my 5 years of computer science student.  
+You can see that I do like OCaml.
 
 ## L3
 
